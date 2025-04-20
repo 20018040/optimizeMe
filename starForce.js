@@ -69,22 +69,20 @@ function mesoCost(level, currentStar){
     23: [0.02, 0.00, 0.686, 0.294],
     24: [0.01, 0.00, 0.594, 0.396],
   };
-  function starForce(level,currentStar,starCatch){
+  function starForce(level,currentStar,starCatch,chanceTime){
     const r= Math.random();
     const [successRate, maintainRate, dropRate, boomRate] = starForceRates[currentStar];
-    
-    if(r < successRate){
-        currentStar++;
+    if(r < successRate || chanceTime == 2 ){
+        return 'success';
     }else if(r < successRate + maintainRate ){//maintain
-        currentStar = currentStar;
+        return 'maintain';
     }else if(r < successRate + maintainRate +dropRate ){//drop
-        currentStar--;
+      return 'drop';
     }else if(r < successRate + maintainRate +dropRate + boomRate){
-        currentStar = 12;
-        return [1,currentStar];
+      return 'boom';
     }
-    return [0,currentStar]; 
-  }
+    return 'success'
+}
   
   function calcExpected(attempts, level, currentStar, starCatch, safeGuard, goalStar){
     let totalCost = 0;
@@ -92,17 +90,33 @@ function mesoCost(level, currentStar){
     for(let i = 0; i<attempts;i++){
       let trialStar = currentStar
       let sessionBoom = 0;
-      
+      let chanceTime = 0;
       while(trialStar<goalStar){
         totalCost += mesoCost(level, trialStar);
         // console.log("current star : ",trialStar);
-        const [boom, newStar] = starForce(level, trialStar, starCatch);
-        trialStar = newStar;
-        if(boom ==1){
-            sessionBoom ++;
+        result = starForce(level, trialStar,starCatch,chanceTime);
+        if(result == 'success'){
+          trialStar++;
+          chanceTime = 0; 
         }
+        else if(result == 'maintain'){
+          
+        }
+        else if(result == 'drop'){
+          trialStar--;
+          chanceTime++;
+          if(trialStar ==15 ||trialStar ==20){
+            if (chanceTime ==1){
+              chanceTime = 0;
+            }
+          }
+        }
+        else if(result == 'boom'){
+          sessionBoom ++;
+          trialStar = 12;
+        }
+        
       }
-      console.log(sessionBoom + " session Boom End\n");
       totalBoom += sessionBoom;
     }
     
@@ -112,10 +126,11 @@ function mesoCost(level, currentStar){
     console.log("Average Boom :", totalBoom/attempts);
   }
 
+
   function main(){
     let level = 150;
     let currentStar = 12;
-    calcExpected(1000, 150, 15, false, false, 22);
+    calcExpected(100000, 150, 15, false, false, 22);
   }
   main()
   
