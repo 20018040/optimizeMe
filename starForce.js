@@ -69,7 +69,7 @@ function mesoCost(level, currentStar){
     23: [0.02, 0.00, 0.686, 0.294],
     24: [0.01, 0.00, 0.594, 0.396],
   };
-  function starForce(level,currentStar,starCatch,chanceTime){
+  function starForce(level,currentStar,starCatch,safeGuard,chanceTime){
     const r= Math.random();
     let [successRate, maintainRate, dropRate, boomRate] = starForceRates[currentStar];
     if (starCatch){
@@ -82,11 +82,18 @@ function mesoCost(level, currentStar){
     }
     if(r < successRate || chanceTime == 2 ){
         return 'success';
-    }else if(r < successRate + maintainRate ){//maintain
+    }
+    else if(r < successRate + maintainRate ){//maintain
         return 'maintain';
     }else if(r < successRate + maintainRate +dropRate ){//drop
       return 'drop';
     }else if(r < successRate + maintainRate +dropRate + boomRate){
+      if((currentStar == 16 || currentStar == 15 )&& safeGuard){
+        if(maintainRate)
+          return 'maintain';
+        else 
+          return 'drop';
+      }
       return 'boom';
     }
     return 'success'
@@ -101,8 +108,11 @@ function mesoCost(level, currentStar){
       let chanceTime = 0;
       while(trialStar<goalStar){
         totalCost += mesoCost(level, trialStar);
+        if((trialStar == 16 || trialStar == 15 )&& safeGuard){
+          totalCost += mesoCost(level,trialStar);
+        }
         // console.log("current star : ",trialStar);
-        result = starForce(level, trialStar,starCatch,chanceTime);
+        result = starForce(level, trialStar,starCatch,safeGuard,chanceTime);
         if(result == 'success'){
           trialStar++;
           chanceTime = 0; 
@@ -113,7 +123,7 @@ function mesoCost(level, currentStar){
         else if(result == 'drop'){
           trialStar--;
           chanceTime++;
-          if(trialStar ==15 ||trialStar ==20){
+          if(trialStar ==15 ||trialStar ==20){//dont think this part is necessary
             if (chanceTime ==1){
               chanceTime = 0;
             }
@@ -138,7 +148,7 @@ function mesoCost(level, currentStar){
   function main(){
     let level = 150;
     let currentStar = 12;
-    calcExpected(100000, 150, 15, true, true, 22);
+    calcExpected(5000, 150, 15, true, true, 16);
   }
   main();
   
