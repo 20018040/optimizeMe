@@ -64,14 +64,22 @@ function mesoCost(level, currentStar){
     18: [0.30, 0.00, 0.672, 0.028],
     19: [0.30, 0.00, 0.672, 0.028],
     20: [0.30, 0.63, 0.00,  0.07],
-    21: [0.30, 0.00, 0.63, 0.07 ],
+    21: [0.30, 0.00, 0.63, 0.07],
     22: [0.03, 0.00, 0.776, 0.194],
     23: [0.02, 0.00, 0.686, 0.294],
     24: [0.01, 0.00, 0.594, 0.396],
   };
   function starForce(level,currentStar,starCatch,chanceTime){
     const r= Math.random();
-    const [successRate, maintainRate, dropRate, boomRate] = starForceRates[currentStar];
+    let [successRate, maintainRate, dropRate, boomRate] = starForceRates[currentStar];
+    if (starCatch){
+      let increased = successRate * 0.05;
+      successRate = successRate *1.05;
+      const remain = 1- successRate;
+      maintainRate = maintainRate - increased * maintainRate / (remain);
+      dropRate =  dropRate - (increased * dropRate / (remain));
+      boomRate =  boomRate- increased *  boomRate/ (remain);
+    }
     if(r < successRate || chanceTime == 2 ){
         return 'success';
     }else if(r < successRate + maintainRate ){//maintain
@@ -130,7 +138,7 @@ function mesoCost(level, currentStar){
   function main(){
     let level = 150;
     let currentStar = 12;
-    calcExpected(100000, 150, 15, false, false, 22);
+    calcExpected(100000, 150, 15, true, true, 22);
   }
-  main()
+  main();
   
