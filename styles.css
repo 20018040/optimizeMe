@@ -74,14 +74,35 @@ button{
     color: white;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     font-size: 20px;
     font-weight: bold;
     border-radius: 10px;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
-.scrollabletextbox {
+
+.stars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
+    max-width: 409px;
+
+}
+.star{
+    font-size: 24px;
+    color: white;
+    text-align: cetner;
+    
+}
+
+.stars .star:nth-child(5n) {
+    margin-right: 15px;
+}
+ .scrollabletextbox {
     height:100px;
     width:200px;
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
