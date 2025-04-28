@@ -52,6 +52,7 @@ button{
     margin: 0 auto; 
     gap : 20px;
     width: fit-content;
+    
 }
 .box {
     width: 530px;
@@ -96,6 +97,7 @@ button{
     font-size: 24px;
     color: white;
     text-align: cetner;
+    cursor: pointer;
     
 }
 
@@ -140,106 +142,48 @@ button{
     margin-top: 5px;
     margin-left : 0px;
 }
-input[type="search"] {
+select.dropdown {
     width: 100px;
     height: 100px;
     border: 2px solid #ccc;
-    position : absolute;
+    position: absolute;
+    background-color: white;
+    font-size: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    text-align: center;
+} 
+
+select.dropdown option {
+    font-size: 16px;
+    color: black;
 }
-.input1 {
-    top: 5px;
-    left: 5px;
-}
-.input2 {
-    top: 110px;
-    left: 5px;
-}
-.input3 {
-    top: 215px;
-    left: 5px;
-}
-.input4 {
-    top: 320px;
-    left: 5px;
-}
-.input5 {
-    top: 425px;
-    left: 5px;
-}
-.input6 {
-    top: 110px;
-    left: 110px;
-}
-.input7 {
-    top: 215px;
-    left: 110px;
-}
-.input8 {
-    top: 320px;
-    left: 110px;
-}
-.input9 {
-    top: 425px;
-    left: 110px;
-}
-.input10 {
-    top: 5px;
-    left: 215px;
-}
-.input11 {
-    top: 110px;
-    left: 215px;
-}
-.input12 {
-    top: 215px;
-    left: 215px;
-}
-.input13 {
-    top: 320px;
-    left: 215px;
-}
-.input14 {
-    top: 425px;
-    left: 215px;
-}
-.input15 {
-    top: 530px;
-    left: 215px;
-}
-.input16 {
-    top: 215px;
-    left: 320px;
-}
-.input17 {
-    top: 320px;
-    left: 320px;
-}
-.input18 {
-    top: 425px;
-    left: 320px;
-}
-.input19 {
-    top: 5px;
-    left: 425px;
-}
-.input20 {
-    top: 110px;
-    left: 425px;
-}
-.input21 {
-    top: 215px;
-    left: 425px;
-}
-.input22 {
-    top: 320px;
-    left: 425px;
-}
-.input23 {
-    top: 425px;
-    left: 425px;
-}
-.input24 {
-    top: 530px;
-    left: 425px;
-}
+
+/* Positioning each dropdown */
+.input1 { top: 5px; left: 5px; }
+.input2 { top: 110px; left: 5px; }
+.input3 { top: 215px; left: 5px; }
+.input4 { top: 320px; left: 5px; }
+.input5 { top: 425px; left: 5px; }
+.input6 { top: 110px; left: 110px; }
+.input7 { top: 215px; left: 110px; }
+.input8 { top: 320px; left: 110px; }
+.input9 { top: 425px; left: 110px; }
+.input10 { top: 5px; left: 215px; }
+.input11 { top: 110px; left: 215px; }
+.input12 { top: 215px; left: 215px; }
+.input13 { top: 320px; left: 215px; }
+.input14 { top: 425px; left: 215px; }
+.input15 { top: 530px; left: 215px; }
+.input16 { top: 215px; left: 320px; }
+.input17 { top: 320px; left: 320px; }
+.input18 { top: 425px; left: 320px; }
+.input19 { top: 5px; left: 425px; }
+.input20 { top: 110px; left: 425px; }
+.input21 { top: 215px; left: 425px; }
+.input22 { top: 320px; left: 425px; }
+.input23 { top: 425px; left: 425px; }
+.input24 { top: 530px; left: 425px; }
 
