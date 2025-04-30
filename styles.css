@@ -43,9 +43,14 @@ h2{
     opacity: 0.8;
 }
 button{
-    background : white;
+    background: yellow;
     border: none;
-    color : black;
+    color: black;
+    cursor: pointer;
+    padding: 10px 20px;
+    display: block;
+    margin: 20px auto;  
+
 }
 .container{
     display: flex;
@@ -68,6 +73,38 @@ button{
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
 }
+.override-box {
+    background-color: white;
+    width : 900px;
+    color: black;
+    font-size: 18px;
+    margin: 0 auto;
+    flex-wrap :wrap;
+    padding-left :30px;
+    align-items: flex-start;    
+    justify-content: flex-start;
+    flex-direction: column;
+    position: relative;
+}
+.override-box input {
+    font-size: 16px;
+    width: 140px;
+    background-color: white;
+    color: black;
+}
+
+.next-row {
+    display: flex;
+    align-items: flex-start; /* Align items to the left */
+    margin-bottom: 15px;  /* Add some space between rows */
+    gap: 10px;
+}
+.button-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* This centers the button horizontally */
+}
+
 .modifier{
     width: 530px;
     height: 635px;

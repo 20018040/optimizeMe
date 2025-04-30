@@ -1,0 +1,74 @@
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Optimize mEquips</title>
+            <link rel="stylesheet" href="styles.css">
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <ul>
+                        <li><a href ="index.html">Home</a></li>
+                        <li><a href ="starforce.html">Starforce Calculator</a></li>
+                        <li>Starforce Optimization</li>
+                    </ul>
+                </nav>
+            </header>
+            
+            <h1>Starforce expected cost calculator</h1>
+            <div class="box override-box">
+                <div class="next-row">
+                    Level 
+                    <input type="text" placeholder="Item Level" class="search-bar" />
+                    Star Catching 
+                    <input list="Star catching" name="item" />
+                    <datalist id="Star catching" placeholder ="Star catching">
+                    <option value="Star catching">
+                    <option value="No Star catching">
+                    </datalist> 
+                    Safeguard 
+                    <input list="safeguards" name="item" />
+                    <datalist id="safeguards" placeholder ="Star catching">
+                    <option value="Safeguard">
+                    <option value="No Safeguard">
+                    </datalist>
+                </div>
+                <div class="next-row">
+                    Events
+                    <input list = "events" name ="item" />
+                    <datalist id="events" placeholder ="Star catching">
+                        <option value="30% Off">
+                        <option value="15/16">
+                        <option value="30% Off + 15/16">
+                        <option value="+2 up to 10">   
+                    </datalist> 
+                    Current Star
+                    <input type="text" placeholder="0" class="search-bar" />
+                    Goal Star 
+                    <input type="text" placeholder="22" class="search-bar" />
+                </div>
+                <div class="next-row">
+                    Trials
+                    <input type="text" placeholder="3000" class="search-bar" />
+                </div>
+                <div class="next-row button-wrapper">
+                    <button>Calculate</button>
+                </div>
+            </div>
+            
+        
+            <section>
+                <div>Link 1 </div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+            </section>
+            <h2>About me</h2>
+            <p>Write about me later.</p>
+        
+            <button>Calculate</button>
+            <script src="script.js"></script>
+        </body>
+    </html>
