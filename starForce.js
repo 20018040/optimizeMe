@@ -137,18 +137,49 @@ function mesoCost(level, currentStar){
       }
       totalBoom += sessionBoom;
     }
-    
+
     console.log("Average Cost :", totalCost/attempts);
     
-    console.log("Total Boom :", totalBoom);
-    console.log("Average Boom :", totalBoom/attempts);
+    return totalCost;
   }
 
 
   function main(){
-    let level = 150;
-    let currentStar = 12;
-    calcExpected(5000, 150, 15, true, true, 16);
+    calcExpected(25000, 150, 15, false, true, 22);
   }
   main();
+//   document.addEventListener("DOMContentLoaded", function () {
+//     document.querySelector(".button-wrapper button").addEventListener("click", function () {
+//         const level = document.querySelector('input[placeholder="Item Level"]').value;
+//         let starCatching = false;
+//         if (document.querySelector('input[list="Star catching"]').value == 'Starcatch'){
+//           starCatching = true;
+//         }
+//         let safeguard = false;
+//         if(document.querySelector('input[list="safeguards"]').value == 'Safeguard'){
+//           safeguard = true;
+//         }
+//         const events = document.querySelector('input[list="events"]').value;
+//         const currentStar = document.querySelector('input[placeholder="0"]').value;
+//         const goalStar = document.querySelector('input[placeholder="22"]').value;
+//         const trials = document.querySelector('input[placeholder="3000"]').value;
+//         const averageCost = calcExpected(trials,level,currentStar,starCatching,safeguard,goalStar)
+//         const output = `
+//             <p><strong>Average Cost: </strong>${averageCost/trials}</p>
+//             <p><strong>Level:</strong> ${level}</p>
+//             <p><strong>Star Catching:</strong> ${starCatching}</p>
+//             <p><strong>Safeguard:</strong> ${safeguard}</p>
+//             <p><strong>Events:</strong> ${events}</p>
+//             <p><strong>Current Star:</strong> ${currentStar}</p>
+//             <p><strong>Goal Star:</strong> ${goalStar}</p>
+//             <p><strong>Trials:</strong> ${trials}</p>
+//         `;
+
+//         const outputBox = document.getElementById("output-box");
+//         document.getElementById("output-content").innerHTML = output;
+//         outputBox.style.display = "block";
+//     });
+// });
+
+  
   
