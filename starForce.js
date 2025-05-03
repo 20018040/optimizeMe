@@ -99,20 +99,26 @@ function mesoCost(level, currentStar){
     return 'success'
 }
   
-  function calcExpected(attempts, level, currentStar, starCatch, safeGuard, goalStar){
+  function calcExpected(attempts, level, currentStar,goalStar, starCatch, safeGuard, thirtyOff, fifteensixteen){
     let totalCost = 0;
     let totalBoom = 0;
+    const sessionCosts = [];
+    const sessionBooms = [];
     for(let i = 0; i<attempts;i++){
       let trialStar = currentStar
       let sessionBoom = 0;
+      let sessionCost = 0;
       let chanceTime = 0;
       while(trialStar<goalStar){
-        totalCost += mesoCost(level, trialStar);
-        if((trialStar == 16 || trialStar == 15 )&& safeGuard){
-          totalCost += mesoCost(level,trialStar);
+        sessionCost += mesoCost(level, trialStar)*thirtyOff;
+        if(trialStar == 15 && fifteensixteen)
+          chanceTime = 2;
+        if((trialStar == 16 || trialStar == 15 )&& safeGuard &&chanceTime != 2){
+          sessionCost += mesoCost(level,trialStar);
         }
         // console.log("current star : ",trialStar);
         result = starForce(level, trialStar,starCatch,safeGuard,chanceTime);
+
         if(result == 'success'){
           trialStar++;
           chanceTime = 0; 
@@ -135,51 +141,69 @@ function mesoCost(level, currentStar){
         }
         
       }
+      
+      sessionCosts.push(sessionCost);
+      sessionBooms.push(sessionBoom);
       totalBoom += sessionBoom;
+      totalCost += sessionCost;
     }
 
-    console.log("Average Cost :", totalCost/attempts);
-    
-    return totalCost;
+    return {
+      totalCost,
+      totalBoom,
+      sessionCosts,
+      sessionBooms
+    };
   }
 
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector(".button-wrapper button").addEventListener("click", function () {
+        const level = document.querySelector('input[placeholder="Item Level"]').value;
+        let starCatching = false;
+        if (document.querySelector('input[list="Star catching"]').value == 'Starcatching'){
+          starCatching = true;
+        }
+        let safeguard = false;
+        if(document.querySelector('input[list="safeguards"]').value == 'Safeguard'){
+          safeguard = true;
+        }
+        let thirtyOff = 1.0;
+        let fifteenSixteen = false;
+        if(document.querySelector('input[list="events"]').value == '30% Off + 15/16'){
+          thirtyOff = 0.7;
+          fifteenSixteen = true;
+        }
+        else if(document.querySelector('input[list="events"]').value == '30% Off'){
+          thirtyOff = 0.7;
+        }
+        else if(document.querySelector('input[list="events"]').value == '15/16'){
+          fifteenSixteen = true;
+        }
+        const events = Number(document.querySelector('input[list="events"]').value);
+        const currentStar = Number(document.querySelector('input[placeholder="0"]').value);
+        const goalStar = Number(document.querySelector('input[placeholder="22"]').value);
+        const trials = Number(document.querySelector('input[placeholder="3000"]').value)  ;
+        
+        const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(trials,level,currentStar,goalStar, starCatching,safeguard,thirtyOff, fifteenSixteen)
+        // const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(3000,150,15,22, true,true,0.70, true);
+        // let trials = 3000;
+        const output = `
+            <p><strong>Average Cost: </strong>${(totalCost/trials).toLocaleString()}</p>
+            <p><strong>Average Boom: </strong>${(totalBoom/trials).toLocaleString()}</p>
+            <p><strong>Level:</strong> ${level}</p>
+            <p><strong>Star Catching:</strong> ${starCatching}</p>
+            <p><strong>Safeguard:</strong> ${safeguard}</p>
+            <p><strong>Events:</strong> ${events}</p>
+            <p><strong>Current Star:</strong> ${currentStar}</p>
+            <p><strong>Goal Star:</strong> ${goalStar}</p>
+            <p><strong>Trials:</strong> ${trials}</p>
+        `;
 
-  function main(){
-    calcExpected(25000, 150, 15, false, true, 22);
-  }
-  main();
-//   document.addEventListener("DOMContentLoaded", function () {
-//     document.querySelector(".button-wrapper button").addEventListener("click", function () {
-//         const level = document.querySelector('input[placeholder="Item Level"]').value;
-//         let starCatching = false;
-//         if (document.querySelector('input[list="Star catching"]').value == 'Starcatch'){
-//           starCatching = true;
-//         }
-//         let safeguard = false;
-//         if(document.querySelector('input[list="safeguards"]').value == 'Safeguard'){
-//           safeguard = true;
-//         }
-//         const events = document.querySelector('input[list="events"]').value;
-//         const currentStar = document.querySelector('input[placeholder="0"]').value;
-//         const goalStar = document.querySelector('input[placeholder="22"]').value;
-//         const trials = document.querySelector('input[placeholder="3000"]').value;
-//         const averageCost = calcExpected(trials,level,currentStar,starCatching,safeguard,goalStar)
-//         const output = `
-//             <p><strong>Average Cost: </strong>${averageCost/trials}</p>
-//             <p><strong>Level:</strong> ${level}</p>
-//             <p><strong>Star Catching:</strong> ${starCatching}</p>
-//             <p><strong>Safeguard:</strong> ${safeguard}</p>
-//             <p><strong>Events:</strong> ${events}</p>
-//             <p><strong>Current Star:</strong> ${currentStar}</p>
-//             <p><strong>Goal Star:</strong> ${goalStar}</p>
-//             <p><strong>Trials:</strong> ${trials}</p>
-//         `;
-
-//         const outputBox = document.getElementById("output-box");
-//         document.getElementById("output-content").innerHTML = output;
-//         outputBox.style.display = "block";
-//     });
-// });
+        const outputBox = document.getElementById("output-box");
+        document.getElementById("output-content").innerHTML = output;
+        outputBox.style.display = "block";
+    });
+});
 
   
   
