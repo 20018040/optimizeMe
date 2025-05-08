@@ -10,7 +10,7 @@ const hybridStat = {//equp divide 40
     5: [6,12,18,24,30,36,42], //200~249
     6: [7,14,21,28,35,42,49] //250+ 
 };
-const atk = [1,2,3,4,5,6,7]; // can use for speed jump dmg%
+const atk = [1,2,3,4,5,6,7]; // can use for speed jump dmg% allstat
 
 const bossDmg = [2,4,6,8,10,12,14]; 
 
@@ -63,9 +63,32 @@ const defense = {
    11: [12, 24, 36, 48, 60, 72, 84]  // 230+
   };
 const equipLevel = [-5,-10,-15,-20,-25,-30,-35];
-const possibleComb = ["Str","Dex","INT","LUK","STR DEX","STR INT",
+const possibleComb = ["STR","DEX","INT","LUK","STR DEX","STR INT",
     "STR LUK","DEX INT", "DEX LUK", "INT LUK","Atk", "MAtk","All Stat",
      "Defense","HP","MP","Speed","Jump"];
-const possibleWeap = ["Str","Dex","INT","LUK","STR DEX","STR INT",
+const possibleWeap = ["STR","DEX","INT","LUK","STR DEX","STR INT",
     "STR LUK","DEX INT", "DEX LUK", "INT LUK","Atk", "MAtk","All Stat",
      "Defense","HP","MP","Boss Damage", "Damage"];
+
+function getRandomFlames(sourceArray, count = 4) {
+    const shuffled = [...sourceArray].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+}
+function pickOption(armor){
+    const source = armor ? possibleComb : possibleWeap;
+    return getRandomFlames(source);
+}
+function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 
+    const itemFlame = new Map();
+    for(flame of flames){
+        const tier = Math.floor(Math.random() * (6 - 3 + 1)) + type ;
+        itemFlame.set(flame, tier);
+    }
+    return itemFlame;
+}
+let flames = pickOption(true);
+console.log("Armor flames:", powerfulFlame(flames));
+console.log("Weapon flames:", powerfulFlame(pickOption(false)));
+function checkFlame(){ //checks if the flame is possible 
+    
+}
