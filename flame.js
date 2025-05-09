@@ -157,13 +157,38 @@ function toStat(itemFlame, itemLevel){
     }
     return flameTotal;
 }
-let flames = pickOption("weapon");
+function convertStat(flameTotal,myStat,mainToSubRate, allStatRate,atkRate){
+    let total = 0;
+    let subStat = 'DEX';
+    if (myStat == 'INT' ){
+        subStat = 'LUK';
+    }
+    else if (myStat == 'DEX')
+        subStat = 'STR';
+    for (let [flame, stat] of flameTotal){
+        if(flame == myStat){
+            total += stat;
+        }
+        else if(flame == subStat){
+            total += stat * mainToSubRate;
+        }
+        else if(flame == 'All Stat')
+            total += stat * allStatRate;
+        else if(myStat == 'INT' &&flame == 'MAtk')
+            total += stat * atkRate;
+        else if(myStat != 'INT' && flame =='Atk')
+            total += stat * atkRate;
+    }
+    return total;
+}
+let flames = pickOption();
 let itemFlames = getFlame(flames,3);
 console.log("Armor flames:", itemFlames);
 // console.log("Weapon flames:", getFlame(pickOption("weapon"),3));
-console.log(toStat(itemFlames,150));
-
-
+let numberFlames = toStat(itemFlames,150)
+console.log("Flames : " ,numberFlames);
+let totalConvert = convertStat(numberFlames,'STR',0.125, 10,4);
+console.log(totalConvert);
 function checkFlame(){ //checks if the flame is possible 
     
 }
