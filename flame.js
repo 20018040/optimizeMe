@@ -104,10 +104,13 @@ function pickOption(armor = "armor"){
     }
     return getRandomFlames(source);
 }
-function getFlame(flames,type =3){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 
+function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 
+    let flameType = 3;
+    if (type == 'eternal')
+        flameType = 4;
     const itemFlame = new Map();
     for(flame of flames){
-        const tier = Math.floor(Math.random() * (6 - 3 + 1)) + type ;
+        const tier = Math.floor(Math.random() * (6 - 3 + 1)) + flameType ;
         itemFlame.set(flame, tier);
     }
     return itemFlame;
@@ -181,14 +184,50 @@ function convertStat(flameTotal,myStat,mainToSubRate, allStatRate,atkRate){
     }
     return total;
 }
-let flames = pickOption();
-let itemFlames = getFlame(flames,3);
-console.log("Armor flames:", itemFlames);
-// console.log("Weapon flames:", getFlame(pickOption("weapon"),3));
-let numberFlames = toStat(itemFlames,150)
-console.log("Flames : " ,numberFlames);
-let totalConvert = convertStat(numberFlames,'STR',0.125, 10,4);
-console.log(totalConvert);
+function calcFlameExpected(trial,level,totalStat,myStat = 'LUK',mainToSubRate = 0.125, allStatRate = 10,atkRate = 4){
+    let counts = 0;
+    let lists = new Map();
+    for(let i = 0; i<trial;i++){
+        let sections = pickOption();
+        let secTiers = getFlame(sections,'powerful');
+        let numberStats = toStat(secTiers,level);
+        let pureTotal = convertStat(numberStats,myStat,0.125,10,4);
+        if (pureTotal >=totalStat){
+            lists.set(counts,numberStats);
+            counts ++;
+        }
+
+    }
+    console.log(lists);
+    return counts;
+}
 function checkFlame(){ //checks if the flame is possible 
     
 }
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector(".button-wrapper button").addEventListener("click", function () {
+        // Select all input elements with the class 'search-bar'
+        const Level = Number(document.querySelector('input[placeholder="Item Level"]').value);
+        const Target = Number(document.querySelector('input[placeholder="Target Flame"]').value);
+        const AllStat = Number(document.querySelector('input[placeholder="All Stat"]').value);
+        const Atk = Number(document.querySelector('input[placeholder="Atk Equivalent"]').value);
+        const Secondary = Number(document.querySelector('input[placeholder="Secondary Stat"]').value);
+        const Trials = Number(document.querySelector('input[placeholder="Trials"]').value);
+        const counts = calcFlameExpected(Trials,Level,Target,undefined,Secondary,AllStat,Atk);
+        const probability = counts/Trials;
+        const output = `
+            <p><strong>
+                In ${Trials} Trials, ${counts} times happened.<br>
+                 Probability: ${(probability * 100).toFixed(2)}%<br>
+                Expected # of flames to hit: ${(1 / probability).toFixed(2)}
+            </strong></p>
+        `;
+
+        const outputBox = document.getElementById("output-box");
+        document.getElementById("output-content").innerHTML = output;
+        outputBox.style.display = "block";
+    });
+});
+
+  
+  

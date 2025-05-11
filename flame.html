@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Optimize mEquips</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href ="index.html">Home</a></li>
+                    <li><a href ="starforce.html">Starforce Calculator</a></li>
+                    <li><a href ="flame.html">Flame Estimator</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <h1>Flame Estimator</h1>
+        <div class="box override-box">
+            <div class="next-row">
+                Level 
+                <input type="text" placeholder="Item Level" class="search-bar" />
+                Target Flame 
+                <input type="text" placeholder="Target Flame" class="search-bar" />
+                Trials
+                <input type="text" placeholder="Trials" class="search-bar" />
+            </div>
+            <div class="next-row">
+                1% All stat Equivalent :  
+                <input type="text" placeholder="All Stat" class="search-bar" />
+                1 Atk/MAtk Equivalent :
+                <input type="text" placeholder="Atk Equivalent" class="search-bar" />
+                1 Secondary Stat is : 
+                <input type="text" placeholder="Secondary Stat" class="search-bar" />
+            </div>
+           
+            <div class="next-row button-wrapper">
+                <button>Calculate</button>
+            </div>
+            
+        </div>
+        <div id="output-box" class="box" style="margin: 20px auto; background-color: white; color: black; padding: 20px; display: none;">
+            <h3>Input Summary</h3>
+            <div id="output-content"></div>
+        </div>
+        
+    
+        <section>
+            <div>Link 1 </div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+        </section>
+        <h2>About me</h2>
+        <p>Write about me later.</p>
+    
+        <button>Calculate</button>
+        <script src="flame.js"></script>
+    </body>
+</html>
