@@ -13,11 +13,14 @@ const soloStat = [
     [11, 22, 33, 44, 55, 66, 77],  // 200-229
     [12, 24, 36, 48, 60, 72, 84]   // 230+
   ];
-const hybridStat = {//equp divide 40
-    3: [4,8,12,16,20,24,28], //120~159
-    4: [5,10,15,20,25,30,35], //160~199
-    5: [6,12,18,24,30,36,42], //200~249
-    6: [7,14,21,28,35,42,49] //250+ 
+const hybridStat = {
+    0: [1, 2, 3, 4, 5, 6, 7],      // 0–39
+    1: [2, 4, 6, 8, 10, 12, 14],   // 40–79
+    2: [3, 6, 9, 12, 15, 18, 21],  // 80–119
+    3: [4, 8, 12, 16, 20, 24, 28], // 120–159
+    4: [5, 10, 15, 20, 25, 30, 35],// 160–199
+    5: [6, 12, 18, 24, 30, 36, 42],// 200–249
+    6: [7, 14, 21, 28, 35, 42, 49] // 250+
 };
 const hybridStats = [
     [1, 2, 3, 4, 5, 6, 7],     // 0–39
@@ -93,6 +96,8 @@ const possibleWeap = ["STR","DEX","INT","LUK","STR DEX","STR INT",
      "Defense","HP","MP","Boss Damage", "Damage","Equip Level"];
 const hybrids = ["STR DEX","STR INT",
     "STR LUK","DEX INT", "DEX LUK", "INT LUK"];
+const powerfulRate = [0.20,0.30,0.36,0.14]; //for 1 2 3 4  or  3,4,5,6
+const eternalRate = [0.29,0.45,0.25,0.01];//2 3 4 5 for non advantage, for advantage 4 5 6 7
 function getRandomFlames(sourceArray, count = 4) {
     const shuffled = [...sourceArray].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, count);
@@ -106,12 +111,23 @@ function pickOption(armor = "armor"){
 }
 function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 
     let flameType = 3;
-    if (type == 'eternal')
+    let prob = powerfulRate;
+    if (type == 'eternal'){
         flameType = 4;
+        prob = eternalRate;
+    }
     const itemFlame = new Map();
     for(flame of flames){
-        const tier = Math.floor(Math.random() * (6 - 3 + 1)) + flameType ;
-        itemFlame.set(flame, tier);
+        const rand = Math.random();
+        let cumulative = 0;
+        // const tier = Math.floor(Math.random() * (6 - 3 + 1)) + flameType ;
+        for (let i = 0; i < prob.length; i++) {
+            cumulative += prob[i];
+            if (rand < cumulative) {
+                itemFlame.set(flame, flameType +i);
+                break;
+            }
+        }
     }
     return itemFlame;
 }
@@ -184,12 +200,12 @@ function convertStat(flameTotal,myStat,mainToSubRate, allStatRate,atkRate){
     }
     return total;
 }
-function calcFlameExpected(trial,level,totalStat,myStat = 'LUK',mainToSubRate = 0.125, allStatRate = 10,atkRate = 4){
+function calcFlameExpected(trial,level,totalStat,myStat = 'LUK',mainToSubRate = 0.125, allStatRate = 10,atkRate = 4,type){
     let counts = 0;
     let lists = new Map();
     for(let i = 0; i<trial;i++){
         let sections = pickOption();
-        let secTiers = getFlame(sections,'powerful');
+        let secTiers = getFlame(sections,type);
         let numberStats = toStat(secTiers,level);
         let pureTotal = convertStat(numberStats,myStat,0.125,10,4);
         if (pureTotal >=totalStat){
@@ -198,7 +214,6 @@ function calcFlameExpected(trial,level,totalStat,myStat = 'LUK',mainToSubRate = 
         }
 
     }
-    console.log(lists);
     return counts;
 }
 function checkFlame(){ //checks if the flame is possible 
@@ -212,8 +227,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const AllStat = Number(document.querySelector('input[placeholder="All Stat"]').value);
         const Atk = Number(document.querySelector('input[placeholder="Atk Equivalent"]').value);
         const Secondary = Number(document.querySelector('input[placeholder="Secondary Stat"]').value);
+        const flameSelected = document.querySelector('input[name="flameType"]:checked').value;
         const Trials = Number(document.querySelector('input[placeholder="Trials"]').value);
-        const counts = calcFlameExpected(Trials,Level,Target,undefined,Secondary,AllStat,Atk);
+        const counts = calcFlameExpected(Trials,Level,Target,undefined,Secondary,AllStat,Atk,flameSelected);
         const probability = counts/Trials;
         const output = `
             <p><strong>
