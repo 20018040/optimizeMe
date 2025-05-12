@@ -1,24 +1,49 @@
-const soloStat = { //equip divide 20 to find its array.
-    7: [8,16,24,32,40,48,56], //140~159
-    8: [9,18,27,36,45,54,63], //160~179
-    10: [11,22,33,44,55,66,77], //200~229
-    11: [12,24,36,48,60,72,84] //230++
+
+const soloStat = [
+    [1, 2, 3, 4, 5, 6, 7],         // 0-19
+    [2, 4, 6, 8, 10, 12, 14],      // 20-39
+    [3, 6, 9, 12, 15, 18, 21],     // 40-59
+    [4, 8, 12, 16, 20, 24, 28],    // 60-79
+    [5, 10, 15, 20, 25, 30, 35],   // 80-99
+    [6, 12, 18, 24, 30, 36, 42],   // 100-119
+    [7, 14, 21, 28, 35, 42, 49],   // 120-139
+    [8, 16, 24, 32, 40, 48, 56],   // 140-159
+    [9, 18, 27, 36, 45, 54, 63],   // 160-179
+    [10, 20, 30, 40, 50, 60, 70],  // 180-199
+    [11, 22, 33, 44, 55, 66, 77],  // 200-229
+    [12, 24, 36, 48, 60, 72, 84]   // 230+
+  ];
+const hybridStat = {
+    0: [1, 2, 3, 4, 5, 6, 7],      // 0–39
+    1: [2, 4, 6, 8, 10, 12, 14],   // 40–79
+    2: [3, 6, 9, 12, 15, 18, 21],  // 80–119
+    3: [4, 8, 12, 16, 20, 24, 28], // 120–159
+    4: [5, 10, 15, 20, 25, 30, 35],// 160–199
+    5: [6, 12, 18, 24, 30, 36, 42],// 200–249
+    6: [7, 14, 21, 28, 35, 42, 49] // 250+
 };
-const hybridStat = {//equp divide 40
-    3: [4,8,12,16,20,24,28], //120~159
-    4: [5,10,15,20,25,30,35], //160~199
-    5: [6,12,18,24,30,36,42], //200~249
-    6: [7,14,21,28,35,42,49] //250+ 
-};
+const hybridStats = [
+    [1, 2, 3, 4, 5, 6, 7],     // 0–39
+    [2, 4, 6, 8, 10, 12, 14],  // 40–79
+    [3, 6, 9, 12, 15, 18, 21], // 80–119
+    [4, 8, 12, 16, 20, 24, 28],// 120–159
+    [5, 10, 15, 20, 25, 30, 35],// 160–199
+    [6, 12, 18, 24, 30, 36, 42],// 200–249
+    [7, 14, 21, 28, 35, 42, 49] // 250+
+  ];//56
+const atkLists = ["Atk", "MAtk","All Stat","Speed","Jump","Damage"];
 const atk = [1,2,3,4,5,6,7]; // can use for speed jump dmg% allstat
 
 const bossDmg = [2,4,6,8,10,12,14]; 
 
-const weaponAtk = {//equip divide 40 
-    3: [0.12, 0.176, 0.242, 0.31944, 0.409948],
-    4: [0.15, 0.22, 0.3025, 0.3993, 0.512435],
-    5: [0.18,0.264,0.363,0.47916, 0.614922]
-};
+const weaponAtk = [
+    [0.03, 0.044, 0.0605, 0.07986, 0.102487],    // 0–39
+    [0.06, 0.088, 0.121, 0.15972, 0.204974],     // 40–79
+    [0.09, 0.132, 0.1815, 0.23958, 0.307461],    // 80–119
+    [0.12, 0.176, 0.242, 0.31944, 0.409948],     // 120–159
+    [0.15, 0.22, 0.3025, 0.3993, 0.512435],      // 160–199
+    [0.18, 0.264, 0.363, 0.47916, 0.614922]      // 200+
+  ];
 const hp = {
     0: [3, 6, 9, 12, 15, 18, 21],           // 0-9
     1: [30, 60, 90, 120, 150, 180, 210],    // 10-19
@@ -65,30 +90,169 @@ const defense = {
 const equipLevel = [-5,-10,-15,-20,-25,-30,-35];
 const possibleComb = ["STR","DEX","INT","LUK","STR DEX","STR INT",
     "STR LUK","DEX INT", "DEX LUK", "INT LUK","Atk", "MAtk","All Stat",
-     "Defense","HP","MP","Speed","Jump"];
+     "Defense","HP","MP","Speed","Jump","Equip Level"];
 const possibleWeap = ["STR","DEX","INT","LUK","STR DEX","STR INT",
-    "STR LUK","DEX INT", "DEX LUK", "INT LUK","Atk", "MAtk","All Stat",
-     "Defense","HP","MP","Boss Damage", "Damage"];
-
+    "STR LUK","DEX INT", "DEX LUK", "INT LUK","wAtk", "wMAtk","All Stat",
+     "Defense","HP","MP","Boss Damage", "Damage","Equip Level"];
+const hybrids = ["STR DEX","STR INT",
+    "STR LUK","DEX INT", "DEX LUK", "INT LUK"];
+const powerfulRate = [0.20,0.30,0.36,0.14]; //for 1 2 3 4  or  3,4,5,6
+const eternalRate = [0.29,0.45,0.25,0.01];//2 3 4 5 for non advantage, for advantage 4 5 6 7
 function getRandomFlames(sourceArray, count = 4) {
     const shuffled = [...sourceArray].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, count);
 }
-function pickOption(armor){
-    const source = armor ? possibleComb : possibleWeap;
+function pickOption(armor = "armor"){
+    let source = possibleComb;
+    if (armor == "weapon"){
+        source = possibleWeap;
+    }
     return getRandomFlames(source);
 }
+<<<<<<< HEAD
 function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 aaaaaaaaaaaaaa
     const itemFlame = new Map();
     for(flame of flames){
         const tier = Math.floor(Math.random() * (6 - 3 + 1)) + type ;
         itemFlame.set(flame, tier);
     }aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+=======
+function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 
+    let flameType = 3;
+    let prob = powerfulRate;
+    if (type == 'eternal'){
+        flameType = 4;
+        prob = eternalRate;
+    }
+    const itemFlame = new Map();
+    for(flame of flames){
+        const rand = Math.random();
+        let cumulative = 0;
+        // const tier = Math.floor(Math.random() * (6 - 3 + 1)) + flameType ;
+        for (let i = 0; i < prob.length; i++) {
+            cumulative += prob[i];
+            if (rand < cumulative) {
+                itemFlame.set(flame, flameType +i);
+                break;
+            }
+        }
+    }
+>>>>>>> c7bb2e6711dd9ab75888b6169c7b5f272951250e
     return itemFlame;
 }
-let flames = pickOption(true);
-console.log("Armor flames:", powerfulFlame(flames));
-console.log("Weapon flames:", powerfulFlame(pickOption(false)));
+function toStat(itemFlame, itemLevel){
+    const flameTotal = new Map();
+    for(let [flame, tier] of itemFlame){
+        tier = tier -1;
+        if(hybrids.includes(flame)){
+            const [stat1, stat2] = flame.split(" ");
+            const value = hybridStat[Math.floor(itemLevel / 40)][tier];
+            if (flameTotal.has(stat1)) {
+                flameTotal.set(stat1, flameTotal.get(stat1) + value);
+            } else {
+                flameTotal.set(stat1, value);
+            }
+            if (flameTotal.has(stat2)) {
+                flameTotal.set(stat2, flameTotal.get(stat2) + value);
+            } else {
+                flameTotal.set(stat2, value);
+            }
+        }
+        else{
+            let value = 0;
+            if (atkLists.includes(flame)){
+                value = atk[tier];
+            }
+            else if (flame == "HP" || flame == "MP"){ //itemLevel/ 10
+                value = hp[Math.floor(itemLevel /10)][tier]
+            }
+            else if (flame == 'Defense')
+                value = defense[Math.floor(itemLevel /20)][tier];
+            else if (flame == 'wAtk' || flame == 'wMAtk') //itemLevel/40
+                value = weaponAtk[Math.floor(itemLevel / 40)][tier-2];
+            else if (flame == 'Boss Damage')
+                value = bossDmg[tier];
+            else if (flame == 'Equip Level')
+                value = equipLevel[tier];
+            else
+                value = soloStat[Math.floor(itemLevel /20)][tier]
+            if (flameTotal.has(flame)) {
+                flameTotal.set(flame, flameTotal.get(flame) + value);
+            } else {
+                flameTotal.set(flame, value);
+            }
+        }
+    }
+    return flameTotal;
+}
+function convertStat(flameTotal,myStat,mainToSubRate, allStatRate,atkRate){
+    let total = 0;
+    let subStat = 'DEX';
+    if (myStat == 'INT' ){
+        subStat = 'LUK';
+    }
+    else if (myStat == 'DEX')
+        subStat = 'STR';
+    for (let [flame, stat] of flameTotal){
+        if(flame == myStat){
+            total += stat;
+        }
+        else if(flame == subStat){
+            total += stat * mainToSubRate;
+        }
+        else if(flame == 'All Stat')
+            total += stat * allStatRate;
+        else if(myStat == 'INT' &&flame == 'MAtk')
+            total += stat * atkRate;
+        else if(myStat != 'INT' && flame =='Atk')
+            total += stat * atkRate;
+    }
+    return total;
+}
+function calcFlameExpected(trial,level,totalStat,myStat = 'LUK',mainToSubRate = 0.125, allStatRate = 10,atkRate = 4,type){
+    let counts = 0;
+    let lists = new Map();
+    for(let i = 0; i<trial;i++){
+        let sections = pickOption();
+        let secTiers = getFlame(sections,type);
+        let numberStats = toStat(secTiers,level);
+        let pureTotal = convertStat(numberStats,myStat,0.125,10,4);
+        if (pureTotal >=totalStat){
+            lists.set(counts,numberStats);
+            counts ++;
+        }
+
+    }
+    return counts;
+}
 function checkFlame(){ //checks if the flame is possible 
     
 }
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector(".button-wrapper button").addEventListener("click", function () {
+        // Select all input elements with the class 'search-bar'
+        const Level = Number(document.querySelector('input[placeholder="Item Level"]').value);
+        const Target = Number(document.querySelector('input[placeholder="Target Flame"]').value);
+        const AllStat = Number(document.querySelector('input[placeholder="All Stat"]').value);
+        const Atk = Number(document.querySelector('input[placeholder="Atk Equivalent"]').value);
+        const Secondary = Number(document.querySelector('input[placeholder="Secondary Stat"]').value);
+        const flameSelected = document.querySelector('input[name="flameType"]:checked').value;
+        const Trials = Number(document.querySelector('input[placeholder="Trials"]').value);
+        const counts = calcFlameExpected(Trials,Level,Target,undefined,Secondary,AllStat,Atk,flameSelected);
+        const probability = counts/Trials;
+        const output = `
+            <p><strong>
+                In ${Trials} Trials, ${counts} times happened.<br>
+                 Probability: ${(probability * 100).toFixed(2)}%<br>
+                Expected # of flames to hit: ${(1 / probability).toFixed(2)}
+            </strong></p>
+        `;
+
+        const outputBox = document.getElementById("output-box");
+        document.getElementById("output-content").innerHTML = output;
+        outputBox.style.display = "block";
+    });
+});
+
+  
+  
