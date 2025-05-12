@@ -78,12 +78,12 @@ function pickOption(armor){
     const source = armor ? possibleComb : possibleWeap;
     return getRandomFlames(source);
 }
-function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 
+function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 aaaaaaaaaaaaaa
     const itemFlame = new Map();
     for(flame of flames){
         const tier = Math.floor(Math.random() * (6 - 3 + 1)) + type ;
         itemFlame.set(flame, tier);
-    }
+    }aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     return itemFlame;
 }
 let flames = pickOption(true);
