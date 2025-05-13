@@ -42,11 +42,15 @@ class Armor {
     this.name = '';
     this.starLevel = starLevel;
     this.flatStats = {
-      STR: 0, DEX: 0, INT: 0, LUK: 0,
-      Defense: 0, HP: 0, MP: 0, ATK: 0, MATK: 0,
-      Speed: 0, Jump: 0, AllStat: 0
+      STR: null, DEX: null, INT: null, LUK: null,
+      Defense: null, HP: null, MP: null, ATK: null, MATK: null,
+      Speed: null, Jump: null, AllStat: null
     };
-    this.flameStats = { ...this.flatStats };
+    this.flameStats = {
+      STR: null, DEX: null, INT: null, LUK: null,
+      Defense: null, HP: null, MP: null, ATK: null, MATK: null,
+      Speed: null, Jump: null, AllStat: null
+    };
   }
   toString() {
     return `${this.name}`;
@@ -59,6 +63,58 @@ function updateStarsDisplay(starLevel) {
   stars.forEach((s, i) => {
     s.style.color = i < starLevel ? 'yellow' : 'white';
   });
+}
+const statsgained = { //stat, hp, speed, gloves
+  0: [2, 5, 0, 0],
+  1: [2, 5, 0, 0],
+  2: [2, 5, 1, 0],
+  3: [2, 10, 1, 0],
+  4: [2, 10, 1, 1],
+  5: [3, 15, 1, 0],
+  6: [3, 15, 1, 1],
+  7: [3, 20, 1, 0],
+  8: [3, 20, 1, 1],
+  9: [3, 25, 1, 0],
+  10: [3, 25, 2, 1],
+  11: [3, 25, 2, 0],
+  12: [3, 25, 2, 1],
+  13: [3, 25, 2, 1],
+  14: [3, 25, 2, 1]
+};
+const higherStats = { // for 15+
+  
+}
+const noHP = ["gloves","shoes","earrings","eye accessory"];
+function statAtStar(itemLevel,starForce,classType,equipType){
+  let statOne = null;
+  let statTwo = null;
+  let statAdd = null;
+  let def = 1.05;
+  let speed = null;
+  let hp = null;
+  let atk = null;
+  if(classType ==='pirate' || classType === 'warrior' ||classType === 'bowman'){
+    statOne = 'STR';
+    statTwo = 'DEX';
+  }
+  else if(classType ==='pirate' || classType === 'warrior'){
+    statOne = 'STR';
+    statTwo = 'DEX';
+  }
+  else if(classType === 'thief'){
+    statOne = 'LUK';
+    statTwo = 'DEX';
+  }
+  else if(classType == 'magician'){
+    statOne = 'INT';
+    statTwo = 'LUK';
+  }
+
+}
+function totalStats(itemLevel,starForce){
+  for(let i = 0; i<starForce; i++){
+    if (i )
+  }
 }
 function updateImageAndBackground(input) {
   const value = input.value.toLowerCase();
