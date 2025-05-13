@@ -296,16 +296,14 @@ function mesoCost(level, currentStar){
         const output = `
             <p><strong>Average Cost: </strong>${(totalCost/trials).toLocaleString()}</p>
             <p><strong>Average Boom: </strong>${(totalBoom/trials).toLocaleString()}</p>
-            <p><strong>Level:</strong> ${level}</p>
-            <p><strong>Star Catching:</strong> ${starCatching}</p>
-            <p><strong>Safeguard:</strong> ${safeguard}</p>
-            <p><strong>Events:</strong> ${events}</p>
-            <p><strong>Current Star:</strong> ${currentStar}</p>
-            <p><strong>Goal Star:</strong> ${goalStar}</p>
-            <p><strong>Trials:</strong> ${trials}</p>
         `;
+        
+        
         renderCharts(sessionCosts,sessionBooms);
         const outputBox = document.getElementById("output-box");
+        const simulationBox = document.getElementById("Simulation-box");
+        simulationBox.style.display = "block"; 
+        
         document.getElementById("output-content").innerHTML = output;
         outputBox.style.display = "block";
     });
