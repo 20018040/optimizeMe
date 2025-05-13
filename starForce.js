@@ -42,6 +42,8 @@ function mesoCost(level, currentStar){
 //     23: [0.02, 0.0, 0.686, 0.294],
 //     24: [0.01, 0.0, 0.594, 0.396]
 //   };
+  let costChartInstance = null;
+  let boomChartInstance = null;
   const starForceRates = {
     0:  [0.95, 0.05, 0.00, 0.00],
     1:  [0.90, 0.10, 0.00, 0.00],
@@ -155,7 +157,111 @@ function mesoCost(level, currentStar){
       sessionBooms
     };
   }
-
+  function createHistogramData(data, bins = 10) { //making histogram 
+    const max = Math.max(...data);
+    const min = 0;
+    const binSize = (max - min) / bins;
+  
+    const binLabels = [];
+    const binCounts = new Array(bins).fill(0);
+  
+    for (let i = 0; i < bins; i++) {
+      const start = Math.round(min + i * binSize);
+      const end = Math.round(min + (i + 1) * binSize);
+      binLabels.push(`${start.toLocaleString()} - ${end.toLocaleString()}`);
+    }
+  
+    for (const value of data) {
+      let index = Math.floor((value - min) / binSize);
+      if (index === bins) index = bins - 1; // edge case: max value
+      binCounts[index]++;
+    }
+  
+    return { binLabels, binCounts };
+  }
+  function renderCharts(sessionCosts, sessionBooms) {
+    const { binLabels, binCounts } = createHistogramData(sessionCosts, 36);
+    const { binLabels: boomLabels, binCounts: boomCounts } = createHistogramData(sessionBooms, 36);
+    const costCtx = document.getElementById('costChart').getContext('2d');
+    const boomCtx = document.getElementById('boomChart').getContext('2d');
+    if (costChartInstance) {
+      costChartInstance.destroy();
+    }
+    if (boomChartInstance) {
+      boomChartInstance.destroy();
+    }
+    costChartInstance = new Chart(costCtx, {
+      type: 'bar',
+      data: {
+        labels: binLabels,
+        datasets: [{
+          label: 'Trial Count per Meso Range',
+          data: binCounts,
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Number of Trials'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Meso Range'
+            }
+          }
+        }
+      }
+    });
+  
+    boomChartInstance = new Chart(boomCtx, {
+      type: 'bar',
+      data: {
+        labels: boomLabels,
+        datasets: [{
+          label: 'Trial Count per Boom Range',
+          data: boomCounts,
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          background: {
+            color: '#ffffff'
+          }
+        },
+        layout: {
+          backgroundColor: '#ffffff'
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Number of Trials'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Boom Count Range'
+            }
+          }
+        }
+      }
+    });
+  }
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".button-wrapper button").addEventListener("click", function () {
         const level = document.querySelector('input[placeholder="Item Level"]').value;
@@ -182,10 +288,10 @@ function mesoCost(level, currentStar){
         const events = Number(document.querySelector('input[list="events"]').value);
         const currentStar = Number(document.querySelector('input[placeholder="0"]').value);
         const goalStar = Number(document.querySelector('input[placeholder="22"]').value);
-        const trials = Number(document.querySelector('input[placeholder="3000"]').value)  ;
+        const trials = Number(document.querySelector('input[placeholder="3000"]').value);
         
         const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(trials,level,currentStar,goalStar, starCatching,safeguard,thirtyOff, fifteenSixteen)
-        // const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(3000,150,15,22, true,true,0.70, true);
+        // const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(30000,150,15,22, true,true,0.7, false);
         // let trials = 3000;
         const output = `
             <p><strong>Average Cost: </strong>${(totalCost/trials).toLocaleString()}</p>
@@ -198,7 +304,7 @@ function mesoCost(level, currentStar){
             <p><strong>Goal Star:</strong> ${goalStar}</p>
             <p><strong>Trials:</strong> ${trials}</p>
         `;
-
+        renderCharts(sessionCosts,sessionBooms);
         const outputBox = document.getElementById("output-box");
         document.getElementById("output-content").innerHTML = output;
         outputBox.style.display = "block";

@@ -103,7 +103,7 @@ button{
 .button-wrapper {
     width: 100%;
     display: flex;
-    justify-content: center; /* This centers the button horizontally */
+    justify-content: center; 
 }
 
 .modifier{
@@ -209,13 +209,18 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color : transparent;
     /* border: none; */
     color : rgb(204, 255, 0);    
-    padding: 2px 5px;   /* Less padding */
-    text-align: center; /* Center the numbers */
-    border: 1px solid #ccc; /* Light border */
-    border-radius: 4px; /* Slightly rounded corners */
+    padding: 2px 5px;   
+    text-align: center; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
     
 }
-
+#costChart, #boomChart {
+    background-color: white 
+}
+.chart-container {
+    margin-bottom: 40px; 
+  }
 
 /* Positioning each dropdown */
 .input1 { top: 5px; left: 5px; }

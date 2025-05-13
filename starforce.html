@@ -61,8 +61,16 @@
             <div id="output-box" class="box" style="margin: 20px auto; background-color: white; color: black; padding: 20px; display: none;">
                 <h3>Input Summary</h3>
                 <div id="output-content"></div>
+                
             </div>
-            
+            <h3>Simulation Results</h3>
+            <div class="chart-container">
+                <canvas id="costChart" width="400" height="200"></canvas>
+            </div>
+              
+            <div class="chart-container">
+                <canvas id="boomChart" width="400" height="200"></canvas>
+            </div>
         
             <section>
                 <div>Link 1 </div>
@@ -75,5 +83,6 @@
         
             <button>Calculate</button>
             <script src="starForce.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         </body>
     </html>

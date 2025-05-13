@@ -78,7 +78,7 @@ function updateImageAndBackground(input) {
   } else {
     input.style.backgroundImage = 'none';
     if (itemImage) {
-      itemImage.src = 'empty.png'; // Set this to your actual "empty" image
+      itemImage.src = 'empty.png'; 
       itemImage.alt = 'No item selected';
     }
   }
