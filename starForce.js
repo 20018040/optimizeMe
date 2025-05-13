@@ -285,7 +285,7 @@ function mesoCost(level, currentStar){
         else if(document.querySelector('input[list="events"]').value == '15/16'){
           fifteenSixteen = true;
         }
-        const events = Number(document.querySelector('input[list="events"]').value);
+        const events = document.querySelector('input[list="events"]').value;
         const currentStar = Number(document.querySelector('input[placeholder="0"]').value);
         const goalStar = Number(document.querySelector('input[placeholder="22"]').value);
         const trials = Number(document.querySelector('input[placeholder="3000"]').value);
