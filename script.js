@@ -64,7 +64,7 @@ function updateStarsDisplay(starLevel) {
     s.style.color = i < starLevel ? 'yellow' : 'white';
   });
 }
-const statsgained = { //stat, hp, speed, gloves
+const stats = { //stat, hp, speed, gloves
   0: [2, 5, 0, 0],
   1: [2, 5, 0, 0],
   2: [2, 5, 1, 0],
@@ -81,11 +81,35 @@ const statsgained = { //stat, hp, speed, gloves
   13: [3, 25, 2, 1],
   14: [3, 25, 2, 1]
 };
-const higherStats = { // for 15+
-  
-}
+const highStats = [
+  // 15★ → 16★ to 21★ → 22★
+  // Format: [visibleStat, nonWeaponAtt, weaponAtt]
+  // Indexing: starforceStats[star - 16][equipLevelRangeIndex]
+  [
+    [7, 7, 6], [9, 8, 7], [11, 9, 8], [13, 10, 9], [15, 12, 13], [17, 14, 114]
+  ],
+  [
+    [7, 8, 7], [9, 9, 8], [11, 10, 9], [13, 11, 9], [15, 13, 13], [17, 15, 15]
+  ],
+  [
+    [7, 9, 7], [9, 10, 8], [11, 11, 9], [13, 12, 10], [15, 14, 14], [17, 16, 16]
+  ],
+  [
+    [7, 10, 8], [9, 11, 9], [11, 12, 10], [13, 13, 11], [15, 15, 14], [17, 17, 17]
+  ],
+  [
+    [7, 11, 9], [9, 12, 10], [11, 13, 11], [13, 14, 12], [15, 16, 15], [17, 18, 18]
+  ],
+  [
+    [null], [9, 13, 11], [11, 14, 12], [13, 15, 13], [15, 17, 16], [17, 19, 19]
+  ],
+  [
+    [null], [9, 15, 12], [11, 16, 13], [13, 17, 14], [15, 19, 17], [17, 21, 21]
+  ]
+];
+
 const noHP = ["gloves","shoes","earrings","eye accessory"];
-function statAtStar(itemLevel,starForce,classType,equipType){
+function statAtStar(itemLevel,starForce,classType = 'all',equipType = 'hp'){
   let statOne = null;
   let statTwo = null;
   let statAdd = null;
@@ -109,12 +133,37 @@ function statAtStar(itemLevel,starForce,classType,equipType){
     statOne = 'INT';
     statTwo = 'LUK';
   }
+  if(starForce<15){
+    [statAdd, hp, speed, atk] = stats[starForce];
+  }
+  else
+    [statAdd,atk] = highStatsStats[starForce]
+  return {
+    statAdd,
+    hp,
+    speed,
+    atk
+  };
 
 }
 function totalStats(itemLevel,starForce){
+  let stat = null;
+  let hp = null;
+  let speed = null;
+  let atk = null;
   for(let i = 0; i<starForce; i++){
-    if (i )
+    gains = statAtStar(itemLevel,i);
+    stat += gains[0];
+    hp += gains[1];
+    speed += gains[2];
+    atk += gains[3];
   }
+  return {
+    stat,
+    hp,
+    speed,
+    atk
+  };
 }
 function updateImageAndBackground(input) {
   const value = input.value.toLowerCase();
