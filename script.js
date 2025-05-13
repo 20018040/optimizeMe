@@ -107,6 +107,15 @@ const highStats = [
     [null], [9, 15, 12], [11, 16, 13], [13, 17, 14], [15, 19, 17], [17, 21, 21]
   ]
 ];
+function getStatIndexFromEquipLevel(level) {
+  if (level >= 128 && level <= 137) return 0;
+  if (level >= 138 && level <= 149) return 1;
+  if (level >= 150 && level <= 159) return 2;
+  if (level >= 160 && level <= 199) return 3;
+  if (level >= 200 && level <= 249) return 4;
+  if (level === 250) return 5;
+  return -1;
+}
 
 const noHP = ["gloves","shoes","earrings","eye accessory"];
 function statAtStar(itemLevel,starForce,classType = 'all',equipType = 'hp'){
@@ -133,17 +142,18 @@ function statAtStar(itemLevel,starForce,classType = 'all',equipType = 'hp'){
     statOne = 'INT';
     statTwo = 'LUK';
   }
+  
   if(starForce<15){
     [statAdd, hp, speed, atk] = stats[starForce];
   }
   else
-    [statAdd,atk] = highStatsStats[starForce]
-  return {
+    [statAdd,atk] = highStats[starForce-15][getStatIndexFromEquipLevel(itemLevel)];
+  return [
     statAdd,
     hp,
     speed,
     atk
-  };
+  ];
 
 }
 function totalStats(itemLevel,starForce){
@@ -158,6 +168,7 @@ function totalStats(itemLevel,starForce){
     speed += gains[2];
     atk += gains[3];
   }
+  console.log(gains, stat,hp,speed,atk);
   return {
     stat,
     hp,
@@ -199,6 +210,7 @@ inputs.forEach((input, index) => {
     if (selectedEquip) {
       updateStarsDisplay(selectedEquip.starLevel || 0);
     }
+    console.log(totalStats(150,selectedEquip.starLevel));
   });
 
   input.addEventListener('change', () => {
