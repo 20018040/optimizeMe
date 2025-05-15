@@ -9,7 +9,22 @@ const ringOptions = [
   { value: 'endless terror', text: 'Endless Terror' },
   { value: 'kanna ring', text: 'Kanna Ring' }
 ];
-
+const statArray = [
+  { min: 0, max: 94, value: 5 },
+  { min: 95, max: 107, value: 8 },
+  { min: 108, max: 117, value: 10 },
+  { min: 118, max: 127, value: 15 },
+  { min: 128, max: 137, value: 20 },
+  { min: 138, max: Infinity, value: 25 }
+];
+function getValue(stat) {
+  for (let range of statArray) {
+    if (stat >= range.min && stat <= range.max) {
+      return range.value;
+    }
+  }
+  return null; // or some default
+}
 const imageMap = {
   'absolab helmet': 'absoHat.png',
   'cra helmet': 'craHat.png',
@@ -118,7 +133,16 @@ function getStatIndexFromEquipLevel(level) {
 }
 
 const noHP = ["gloves","shoes","earrings","eye accessory"];
-function statAtStar(itemLevel,starForce,classType = 'all',equipType = 'hp'){
+// Job Stat +2
+// Non-Weapon's Visible DEF +5%
+// Overall's Visible DEF +5%
+// Category A's Max HP +5
+// Weapon's Max MP +5
+// Weapon's Visible ATT +2%
+// Weapon's Visible Magic ATT +2%
+// Shoes' Speed +1
+// Shoes' Jump +1
+function statAtStar(itemLevel,starForce,classType = 'all',equipType = 'ring'){
   let statOne = null;
   let statTwo = null;
   let statAdd = null;
@@ -145,6 +169,11 @@ function statAtStar(itemLevel,starForce,classType = 'all',equipType = 'hp'){
   
   if(starForce<15){
     [statAdd, hp, speed, atk] = stats[starForce];
+    if ( noHP.contains(equipType)){
+      hp = 0; 
+      if (equipType !== 'shoes')
+      speed = 0;
+    }
   }
   else
     [statAdd,atk] = highStats[starForce-15][getStatIndexFromEquipLevel(itemLevel)];
@@ -156,7 +185,7 @@ function statAtStar(itemLevel,starForce,classType = 'all',equipType = 'hp'){
   ];
 
 }
-function totalStats(itemLevel,starForce){
+function totalStats(itemLevel,starForce,baseDefense = 0,baseAtk = 0){
   let stat = null;
   let hp = null;
   let speed = null;
