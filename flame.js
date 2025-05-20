@@ -109,8 +109,7 @@ function pickOption(armor = "armor"){
     }
     return getRandomFlames(source);
 }
-function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4
-function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 
+function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be powerful Eternal would be 4 randomly sets flame to tier 3~6 or 4~7
     let flameType = 3;
     let prob = powerfulRate;
     if (type == 'eternal'){
@@ -119,12 +118,8 @@ function getFlame(flames,type){ //type indicates powerful Or eternal 3 would be 
     }
     const itemFlame = new Map();
     for(flame of flames){
-        const tier = Math.floor(Math.random() * (6 - 3 + 1)) + type ;
-        itemFlame.set(flame, tier);
-    }
         const rand = Math.random();
         let cumulative = 0;
-        // const tier = Math.floor(Math.random() * (6 - 3 + 1)) + flameType ;
         for (let i = 0; i < prob.length; i++) {
             cumulative += prob[i];
             if (rand < cumulative) {
