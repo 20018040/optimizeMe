@@ -136,7 +136,7 @@ function toStat(itemFlame, itemLevel){
         tier = tier -1;
         if(hybrids.includes(flame)){
             const [stat1, stat2] = flame.split(" ");
-            const value = hybridStat[Math.floor(itemLevel / 40)][tier];
+            const value = hybridStat[Math.min(Math.floor(itemLevel / 40),6)][tier];
             if (flameTotal.has(stat1)) {
                 flameTotal.set(stat1, flameTotal.get(stat1) + value);
             } else {
@@ -154,18 +154,18 @@ function toStat(itemFlame, itemLevel){
                 value = atk[tier];
             }
             else if (flame == "HP" || flame == "MP"){ //itemLevel/ 10
-                value = hp[Math.floor(itemLevel /10)][tier]
+                value = hp[Math.min(Math.floor(itemLevel /10),24)][tier]
             }
             else if (flame == 'Defense')
-                value = defense[Math.floor(itemLevel /20)][tier];
+                value = defense[Math.min(Math.floor(itemLevel / 20), 11)][tier];
             else if (flame == 'wAtk' || flame == 'wMAtk') //itemLevel/40
-                value = weaponAtk[Math.floor(itemLevel / 40)][tier-2];
+                value = weaponAtk[Math.min(Math.floor(itemLevel / 40),5)][tier-2];
             else if (flame == 'Boss Damage')
                 value = bossDmg[tier];
             else if (flame == 'Equip Level')
                 value = equipLevel[tier];
             else
-                value = soloStat[Math.floor(itemLevel /20)][tier]
+                value = soloStat[Math.min(Math.floor(itemLevel /20),11)][tier]
             if (flameTotal.has(flame)) {
                 flameTotal.set(flame, flameTotal.get(flame) + value);
             } else {

@@ -201,6 +201,44 @@ function totalStats(itemLevel, starForce, baseDefense = 0, baseAtk = 0, equipTyp
   return stats;
 }
 
+function updateStarStat(){
+  if (currentlySelected !== null && equips[currentlySelected]) {
+      const selectedEquip = equips[currentlySelected];
+      const itemLevel = selectedEquip.level || 150;
+      // const equipType = selectedEquip.name?.toLowerCase().includes('ring') ? 'ring' : 'other';
+      const equipType = 'ring';
+
+      const updatedStats = totalStats(itemLevel, selectedEquip.starLevel, 0, 0, equipType);
+      console.log('Updated Stats:', updatedStats);
+
+      // Update starForceStat values in the UI
+      const armorStatsContainer = document.querySelector('.ArmorStats');
+      const starForceSpans = armorStatsContainer.querySelectorAll('.starForceStat');
+
+      // Expected stat keys from totalStats: str, dex, int, luk, def, hp, atk, matk, spd, jmp, allStat
+      const statMap = [
+        'STR', 'DEX', 'INT', 'LUK', 'Defense', 'MAX HP',       // 0-5
+        'MAX MP',                                        // 
+        'Attack Power', 'Magic Attack', 'Speed', 'Jump'  // 7-12
+      ];
+
+      starForceSpans.forEach((span, i) => {
+        const key = statMap[i];
+        if (key && updatedStats.get(key) !== undefined) {
+          span.textContent = updatedStats.get(key);
+          span.style.color = 'orange';
+        }
+        else{
+          span.textContent = '0';
+          span.style.color = 'white';
+        }
+      });
+      
+      console.log('Number of yellow stars: ', selectedEquip.starLevel);
+    }
+
+  
+}
 
 
 function updateImageAndBackground(input) {
@@ -236,6 +274,7 @@ inputs.forEach((input, index) => {
     const selectedEquip = equips[index];
     if (selectedEquip) {
       updateStarsDisplay(selectedEquip.starLevel || 0);
+      updateStarStat();
       console.log(totalStats(150,selectedEquip.starLevel));
     }
 
@@ -266,33 +305,34 @@ stars.forEach((star, index) => {
     if (currentlySelected !== null && equips[currentlySelected]) {
       const selectedEquip = equips[currentlySelected];
       selectedEquip.starLevel = index + 1;
+      updateStarStat();
+    //   const itemLevel = selectedEquip.level || 150;
+    //   // const equipType = selectedEquip.name?.toLowerCase().includes('ring') ? 'ring' : 'other';
+    //   const equipType = 'ring';
 
-      const itemLevel = selectedEquip.level || 150;
-      // const equipType = selectedEquip.name?.toLowerCase().includes('ring') ? 'ring' : 'other';
-      const equipType = 'ring';
+    //   const updatedStats = totalStats(itemLevel, selectedEquip.starLevel, 0, 0, equipType);
+    //   console.log('Updated Stats:', updatedStats);
 
-      const updatedStats = totalStats(itemLevel, selectedEquip.starLevel, 0, 0, equipType);
-      console.log('Updated Stats:', updatedStats);
+    //   // Update starForceStat values in the UI
+    //   const armorStatsContainer = document.querySelector('.ArmorStats');
+    //   const starForceSpans = armorStatsContainer.querySelectorAll('.starForceStat');
 
-      // Update starForceStat values in the UI
-      const armorStatsContainer = document.querySelector('.ArmorStats');
-      const starForceSpans = armorStatsContainer.querySelectorAll('.starForceStat');
+    //   // Expected stat keys from totalStats: str, dex, int, luk, def, hp, atk, matk, spd, jmp, allStat
+    //   const statMap = [
+    //     'STR', 'DEX', 'INT', 'LUK', 'Defense', 'MAX HP',       // 0-5
+    //     'MAX MP',                                        // 
+    //     'Attack Power', 'Magic Attack', 'Speed', 'Jump'  // 7-12
+    //   ];
 
-      // Expected stat keys from totalStats: str, dex, int, luk, def, hp, atk, matk, spd, jmp, allStat
-      const statMap = [
-        'STR', 'DEX', 'INT', 'LUK', 'Defense', 'MAX HP',       // 0-5
-        'MAX MP',                                        // 
-        'Attack Power', 'Magic Attack', 'Speed', 'Jump'  // 7-12
-      ];
-
-      starForceSpans.forEach((span, i) => {
-        const key = statMap[i];
-        if (key && updatedStats.get(key) !== undefined) {
-          span.textContent = updatedStats.get(key);
-        }
-      });
+    //   starForceSpans.forEach((span, i) => {
+    //     const key = statMap[i];
+    //     if (key && updatedStats.get(key) !== undefined) {
+    //       span.textContent = updatedStats.get(key);
+    //       span.style.color = 'orange';
+    //     }
+    //   });
     }
 
-    console.log('Number of yellow stars: ', index + 1);
+    // console.log('Number of yellow stars: ', index + 1);
   });
 });
