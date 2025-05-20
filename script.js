@@ -169,7 +169,7 @@ function statAtStar(itemLevel,starForce,classType = 'all',equipType = 'ring'){
   
   if(starForce<15){
     [statAdd, hp, speed, atk] = stats[starForce];
-    if ( noHP.contains(equipType)){
+    if ( noHP.includes(equipType)){
       hp = 0; 
       if (equipType !== 'shoes')
       speed = 0;
