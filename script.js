@@ -190,6 +190,7 @@ function totalStats(itemLevel,starForce,baseDefense = 0,baseAtk = 0){
   let hp = null;
   let speed = null;
   let atk = null;
+  let gains = null;
   for(let i = 0; i<starForce; i++){
     gains = statAtStar(itemLevel,i);
     stat += gains[0];
