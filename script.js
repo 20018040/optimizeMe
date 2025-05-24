@@ -7,7 +7,7 @@ const ringOptions = [
   { value: 'superior gollux ring', text: 'Superior Gollux Ring' },
   { value: 'meister ring', text: 'Meister Ring' },
   { value: 'endless terror', text: 'Endless Terror' },
-  { value: 'kanna ring', text: 'Kanna Ring' }
+  { value: 'kannas treasure', text: 'Kanna\'s Treasure' }
 ];
 const pocketOptions = [
   { value: '', text: 'Select' },
@@ -18,25 +18,27 @@ const pendantOptions = [
   { value: '', text: 'Select' },
   { value: 'dominator', text: 'Dominator' },
   { value: 'superior gollux pendant', text: 'Superior Gollux Pendant' },
-  { value: 'source of suffering', text: 'Source of Suffering' }
+  { value: 'source of suffering', text: 'Source of Suffering' },
+  { value: 'reinforced gollux pendant', text: 'Reinforced Gollux Pendant'}
 ];
 const weaponOptions = [ //need updat later 
   { value: '', text: 'Select' },
   { value: 'arcane', text: 'Arcane Weapon' },
-  { value: 'genesis', text: 'Genesis Weapon' },
-  { value: 'source of suffering', text: 'Source of Suffering' }
+  { value: 'genesis', text: 'Genesis Weapon' }
 ];
 const beltOptions = [
   { value: '', text: 'Select' },
   { value: 'golden clover belt', text: 'Golden Clover Belt' },
   { value: 'superior gollux belt', text: 'Superior Gollux Belt' },
-  { value: 'dreamy belt', text: 'Dreamy Belt' }
+  { value: 'dreamy belt', text: 'Dreamy Belt' },
+  { value: 'reinforced gollux belt', text: 'Reinforced Gollux Belt'}
 ];
 const hatOptions = [
   { value: '', text: 'Select' },
   { value: 'cra helmet', text: 'CRA Helmet' },
   { value: 'absolab helmet', text: 'Absolab helmet' },
-  { value: 'arcane helmet', text: 'Arcane Helmet' }
+  { value: 'arcane helmet', text: 'Arcane Helmet' },
+  { value: 'eternal helmet', text: 'Eternal Helmet'}
 ];
 const faceOptions = [
   { value: '', text: 'Select' },
@@ -69,8 +71,8 @@ const bottomOptions = [
 ];
 const shoesOptions = [
   { value: '', text: 'Select' },
-  { value: 'pensalir shoes', text: 'Pensalir Shoes' },
-  { value: 'ranmaru shoes', text: 'Ranmaru Shoes' },
+  // { value: 'pensalir shoes', text: 'Pensalir Shoes' },
+  // { value: 'ranmaru shoes', text: 'Ranmaru Shoes' },
   { value: 'absolab shoes', text: 'Absolab Shoes' },
   { value: 'arcane shoes', text: 'Arcane Shoes' },
   { value: 'eternal shoes', text: 'Eternal Shoes' }
@@ -87,7 +89,7 @@ const earringOptions = [
 const shoulderOptions = [
   { value: '', text: 'Select' },
   { value: 'royal black metal shoulder', text: 'Royal Black Metal Shoulder' },
-  { value: 'ranmaru shoulder', text: 'Ranmaru Shoulder' },
+  // { value: 'ranmaru shoulder', text: 'Ranmaru Shoulder' },
   { value: 'absolab shoulder', text: 'Absolab Shoulder' },
   { value: 'arcane shoulder', text: 'Arcane Shoulder' },
   { value: 'eternal shoulder', text: 'Eternal Shoulder' }
@@ -95,8 +97,8 @@ const shoulderOptions = [
 
 const gloveOptions = [
   { value: '', text: 'Select' },
-  { value: 'pensalir gloves', text: 'Pensalir Gloves' },
-  { value: 'ranmaru gloves', text: 'Ranmaru Gloves' },
+  // { value: 'pensalir gloves', text: 'Pensalir Gloves' },
+  // { value: 'ranmaru gloves', text: 'Ranmaru Gloves' },
   { value: 'absolab gloves', text: 'Absolab Gloves' },
   { value: 'arcane gloves', text: 'Arcane Gloves' },
   { value: 'eternal gloves', text: 'Eternal Gloves' }
@@ -116,8 +118,8 @@ const secondaryOptions = [
 
 const capeOptions = [
   { value: '', text: 'Select' },
-  { value: 'pensalir cape', text: 'Pensalir Cape' },
-  { value: 'ranmaru cape', text: 'Ranmaru Cape' },
+  // { value: 'pensalir cape', text: 'Pensalir Cape' },
+  // { value: 'ranmaru cape', text: 'Ranmaru Cape' },
   { value: 'absolab cape', text: 'Absolab Cape' },
   { value: 'arcane cape', text: 'Arcane Cape' },
   { value: 'eternal cape', text: 'Eternal Cape' }
@@ -146,7 +148,7 @@ const imageMap = {
   'superior gollux ring': 'superiorGolluxRing.png',
   'meister ring': 'meisterRing.png',
   'endless terror': 'endlessTerror.png',
-  'kanna ring': 'kannaRing.png',
+  'kannas treasure': 'kannasTreasure.png',
 
   // Pocket
   'pink holy cup': 'pinkHolyCup.png',
@@ -156,6 +158,7 @@ const imageMap = {
   'dominator': 'dominator.png',
   'superior gollux pendant': 'superiorGolluxPendant.png',
   'source of suffering': 'sourceOfSuffering.png',
+  'reinforced gollux pendant' : 'reinforcedGolluxPendant.png',
 
   // Weapon
   'arcane': 'arcaneWeapon.png',
@@ -165,11 +168,13 @@ const imageMap = {
   'golden clover belt': 'goldenCloverBelt.png',
   'superior gollux belt': 'superiorGolluxBelt.png',
   'dreamy belt': 'dreamyBelt.png',
+  'reinforced gollux belt' : 'reinforcedGolluxBelt.png',
 
   // Hat
   'cra helmet': 'craHat.png',
   'absolab helmet': 'absoHat.png',
   'arcane helmet': 'arcaneHat.png',
+  'eternal helmet': 'eternalHat.png',
 
   // Face Accessory
   'condensed power crystal': 'condensedPowerCrystal.png',
@@ -195,7 +200,7 @@ const imageMap = {
   // Shoes
   'pensalir shoes': 'pensalirShoes.png',
   'ranmaru shoes': 'ranmaruShoes.png',
-  'absolab shoes': 'absolabShoes.png',
+  'absolab shoes': 'absoShoes.png',
   'arcane shoes': 'arcaneShoes.png',
   'eternal shoes': 'eternalShoes.png',
 
@@ -208,14 +213,14 @@ const imageMap = {
   // Shoulder
   'royal black metal shoulder': 'royalBlackMetalShoulder.png',
   'ranmaru shoulder': 'ranmaruShoulder.png',
-  'absolab shoulder': 'absolabShoulder.png',
+  'absolab shoulder': 'absoShoulder.png',
   'arcane shoulder': 'arcaneShoulder.png',
   'eternal shoulder': 'eternalShoulder.png',
 
   // Gloves
   'pensalir gloves': 'pensalirGloves.png',
   'ranmaru gloves': 'ranmaruGloves.png',
-  'absolab gloves': 'absolabGloves.png',
+  'absolab gloves': 'absoGloves.png',
   'arcane gloves': 'arcaneGloves.png',
   'eternal gloves': 'eternalGloves.png',
 
@@ -230,7 +235,7 @@ const imageMap = {
   // Cape
   'pensalir cape': 'pensalirCape.png',
   'ranmaru cape': 'ranmaruCape.png',
-  'absolab cape': 'absolabCape.png',
+  'absolab cape': 'absoCape.png',
   'arcane cape': 'arcaneCape.png',
   'eternal cape': 'eternalCape.png'
 };
