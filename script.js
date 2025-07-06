@@ -3,11 +3,11 @@ let currentlySelected = null;
 
 const ringOptions = [
   { value: '', text: 'Select' },
-  { value: 'reinforced ring', text: 'Reinforced Ring' },
+  { value: 'reinforced gollux ring', text: 'Reinforced Gollux Ring' },
   { value: 'superior gollux ring', text: 'Superior Gollux Ring' },
   { value: 'meister ring', text: 'Meister Ring' },
   { value: 'endless terror', text: 'Endless Terror' },
-  { value: 'kannas treasure', text: 'Kanna\'s Treasure' }
+  { value: 'kanna\'s treasure', text: 'Kanna\'s Treasure' }
 ];
 const pocketOptions = [
   { value: '', text: 'Select' },
@@ -23,8 +23,8 @@ const pendantOptions = [
 ];
 const weaponOptions = [ //need updat later 
   { value: '', text: 'Select' },
-  { value: 'arcane', text: 'Arcane Weapon' },
-  { value: 'genesis', text: 'Genesis Weapon' }
+  { value: 'arcane weapon', text: 'Arcane Weapon' },
+  { value: 'genesis weapon', text: 'Genesis Weapon' }
 ];
 const beltOptions = [
   { value: '', text: 'Select' },
@@ -144,11 +144,11 @@ function getValue(stat) {
 
 const imageMap = {
   // Ring
-  'reinforced ring': 'reinforcedRing.png',
+  'reinforced gollux ring': 'reinforcedRing.png',
   'superior gollux ring': 'superiorGolluxRing.png',
   'meister ring': 'meisterRing.png',
   'endless terror': 'endlessTerror.png',
-  'kannas treasure': 'kannasTreasure.png',
+  'kanna\'s treasure': 'kannasTreasure.png',
 
   // Pocket
   'pink holy cup': 'pinkHolyCup.png',
@@ -345,7 +345,7 @@ const stats = { //stat, hp, speed, gloves
 const highStats = [
   // 15★ → 16★ to 21★ → 22★
   // Format: [visibleStat, nonWeaponAtt, weaponAtt]
-  // Indexing: starforceStats[star - 16][equipLevelRangeIndex]
+  // Indexing: starforceStats[star - 15][equipLevelRangeIndex]
   [
     [7, 7, 6], [9, 8, 7], [11, 9, 8], [13, 10, 9], [15, 12, 13], [17, 14, 114]
   ],
@@ -368,6 +368,7 @@ const highStats = [
     [null], [9, 15, 12], [11, 16, 13], [13, 17, 14], [15, 19, 17], [17, 21, 21]
   ]
 ];
+
 function getStatIndexFromEquipLevel(level) {
   if (level >= 128 && level <= 137) return 0;
   if (level >= 138 && level <= 149) return 1;
@@ -388,6 +389,8 @@ const noHP = ["gloves","shoes","earrings","eye accessory"];
 // Weapon's Visible Magic ATT +2%
 // Shoes' Speed +1
 // Shoes' Jump +1
+
+//finds stat gained at given star
 function statAtStar(itemLevel,starForce,equipType = 'ring'){
   let statOne = null;
   let statTwo = null;
@@ -429,11 +432,15 @@ function statAtStar(itemLevel,starForce,equipType = 'ring'){
     result["Speed"] = speed;
     result["Jump"] = speed;
   }
-  if (atk > 0) result["Attack Power"] = atk;
+  if (atk > 0) {
+    result["Attack Power"] = atk;
+    result["Magic Attack"] = atk;
+  }
 
   return result;
 }
 
+//finding total stat of item at given star. returns map of it.
 function totalStats(itemLevel, starForce, baseDefense = 0, baseAtk = 0, equipType = 'ring', classType = 'all') {
   let stats = new Map();
 
@@ -445,6 +452,73 @@ function totalStats(itemLevel, starForce, baseDefense = 0, baseAtk = 0, equipTyp
   }
 
   return stats;
+}
+const itemsByLevel = {
+  140: [
+    'reinforced gollux ring',
+    'reinforced gollux pendant',
+    'reinforced gollux belt',
+    'reinforced gollux earring',
+    'meister ring',
+    "kanna's treasure",
+    'pink holy cup',
+    'dominator',
+    'cra helmet'
+  ],
+
+  150: [
+    'superior gollux ring',
+    'superior gollux pendant',
+    'superior gollux belt',
+    'superior gollux earring',
+    'golden clover belt',
+    'dea sidus earring',
+    'command force earring'
+  ],
+
+  160: [
+    'absolab helmet',
+    'absolab shoes',
+    'absolab gloves',
+    'absolab shoulder',
+    'absolab cape',
+    'absolab overall',
+    'cursed spell book',
+    'source of suffering'
+  ],
+
+  200: [
+    'arcane weapon',
+    'arcane helmet',
+    'arcane shoes',
+    'arcane gloves',
+    'arcane shoulder',
+    'arcane cape',
+    'arcane overall',
+    'mitra emblem',
+    'endless terror',
+    'genesis weapon',
+    'dreamy belt'
+  ],
+
+  250: [
+    'eternal helmet',
+    'eternal shoes',
+    'eternal gloves',
+    'eternal shoulder',
+    'eternal cape',
+    'eternal top',
+    'eternal bottom'
+  ]
+};
+
+function findItemLevel(itemName) {
+  for (const [level, items] of Object.entries(itemsByLevel)) {
+    if (items.includes(itemName.toLowerCase())) {
+      return parseInt(level);
+    }
+  }
+  return null; // or "Unknown"
 }
 
 function updateStarStat(){
@@ -468,7 +542,7 @@ function updateStarStat(){
         'Attack Power', 'Magic Attack', 'Speed', 'Jump'  // 7-10
       ];
 
-      starForceSpans.forEach((span, i) => {
+      starForceSpans.forEach((span, i) => { //uses each of statmap category to find value of key (stat) in upDatedStat
         const key = statMap[i];
         if (key && updatedStats.get(key) !== undefined) {
           span.textContent = updatedStats.get(key);
@@ -515,13 +589,12 @@ function updateImageAndBackground(input) {
 inputs.forEach((input, index) => {
   input.addEventListener('focus', () => {
     currentlySelected = index;
-    updateImageAndBackground(input);
 
     const selectedEquip = equips[index];
     if (selectedEquip) {
       updateStarsDisplay(selectedEquip.starLevel || 0);
       updateStarStat();
-      console.log(totalStats(150,selectedEquip.starLevel));
+      console.log(selectedEquip.name, " ",selectedEquip.level);
     }
 
   });
@@ -530,11 +603,12 @@ inputs.forEach((input, index) => {
     const selectedValue = input.value;
     const armor = new Armor();
     armor.name = selectedValue;
+    armor.level = findItemLevel(selectedValue);
     equips[index] = armor;
     currentlySelected = index;
-
     updateImageAndBackground(input);
     updateStarsDisplay(armor.starLevel);
+    console.log(findItemLevel(selectedValue));
   });
 });
 
