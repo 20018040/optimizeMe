@@ -552,7 +552,6 @@ function updateStarStat(){
           span.textContent = '0';
           span.style.color = 'white';
         }
-        console.log(span,i);
       });
       
       console.log('Number of yellow stars: ', selectedEquip.starLevel);
@@ -586,7 +585,7 @@ function updateImageAndBackground(input) {
 }
 
 // Set up dropdown behavior
-inputs.forEach((input, index) => {
+inputs.forEach((input, index) => { //when box is clicked 
   input.addEventListener('focus', () => {
     currentlySelected = index;
 
@@ -595,11 +594,12 @@ inputs.forEach((input, index) => {
       updateStarsDisplay(selectedEquip.starLevel || 0);
       updateStarStat();
       console.log(selectedEquip.name, " ",selectedEquip.level);
+      updateImageAndBackground(input);
     }
 
   });
 
-  input.addEventListener('change', () => {
+  input.addEventListener('change', () => { //when input actually changed
     const selectedValue = input.value;
     const armor = new Armor();
     armor.name = selectedValue;

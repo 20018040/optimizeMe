@@ -193,7 +193,12 @@ select.dropdown {
     cursor: pointer;
     text-align: center;
 } 
-
+select.pots{
+    width : 100px;
+    height : 25px;
+    display: block;
+    margin-bottom: 4px;
+}
 
 select.dropdown option {
     font-size: 16px;
