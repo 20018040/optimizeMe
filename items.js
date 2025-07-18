@@ -1,3 +1,4 @@
+
 export const imageMap = {
     // Ring
     'reinforced gollux ring': 'reinforcedRing.png',
@@ -95,7 +96,6 @@ export const imageMap = {
     'arcane cape': 'arcaneCape.png',
     'eternal cape': 'eternalCape.png'
   };
-
  //-----------------------stores item levels 
 export const itemsByLevel = {
   140: [

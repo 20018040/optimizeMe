@@ -3,7 +3,6 @@ let currentlySelected = null;
 import {imageMap,itemsByLevel} from './items.js';
 import {dropdownMap} from './dropDownData.js';
 import {statArray,stats,highStats,noHP} from './starForceStats.js';
-
 function getValue(stat) {
   for (let range of statArray) {
     if (stat >= range.min && stat <= range.max) {
@@ -193,7 +192,7 @@ function updateStarStat(){
 
 function updateImageAndBackground(input) {
   const value = input.value.toLowerCase();
-  const imageUrl = imageMap[value] || '';
+  const imageUrl = imageMap[value] ? `itemimages/${imageMap[value]}` : '';
   const itemImage = document.querySelector('.itemImage img');
 
   if (imageUrl) {
