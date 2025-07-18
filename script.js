@@ -1,138 +1,9 @@
 const inputs = document.querySelectorAll('select');
 let currentlySelected = null;
+import {imageMap,itemsByLevel} from './items.js';
+import {dropdownMap} from './dropDownData.js';
+import {statArray,stats,highStats,noHP} from './starForceStats.js';
 
-const ringOptions = [
-  { value: '', text: 'Select' },
-  { value: 'reinforced gollux ring', text: 'Reinforced Gollux Ring' },
-  { value: 'superior gollux ring', text: 'Superior Gollux Ring' },
-  { value: 'meister ring', text: 'Meister Ring' },
-  { value: 'endless terror', text: 'Endless Terror' },
-  { value: 'kanna\'s treasure', text: 'Kanna\'s Treasure' }
-];
-const pocketOptions = [
-  { value: '', text: 'Select' },
-  { value: 'pink holy cup', text: 'Pink Holy Cup' },
-  { value: 'cursed spell book', text: 'Cursed Spell Book' }
-];
-const pendantOptions = [
-  { value: '', text: 'Select' },
-  { value: 'dominator', text: 'Dominator' },
-  { value: 'superior gollux pendant', text: 'Superior Gollux Pendant' },
-  { value: 'source of suffering', text: 'Source of Suffering' },
-  { value: 'reinforced gollux pendant', text: 'Reinforced Gollux Pendant'}
-];
-const weaponOptions = [ //need updat later 
-  { value: '', text: 'Select' },
-  { value: 'arcane weapon', text: 'Arcane Weapon' },
-  { value: 'genesis weapon', text: 'Genesis Weapon' }
-];
-const beltOptions = [
-  { value: '', text: 'Select' },
-  { value: 'golden clover belt', text: 'Golden Clover Belt' },
-  { value: 'superior gollux belt', text: 'Superior Gollux Belt' },
-  { value: 'dreamy belt', text: 'Dreamy Belt' },
-  { value: 'reinforced gollux belt', text: 'Reinforced Gollux Belt'}
-];
-const hatOptions = [
-  { value: '', text: 'Select' },
-  { value: 'cra helmet', text: 'CRA Helmet' },
-  { value: 'absolab helmet', text: 'Absolab helmet' },
-  { value: 'arcane helmet', text: 'Arcane Helmet' },
-  { value: 'eternal helmet', text: 'Eternal Helmet'}
-];
-const faceOptions = [
-  { value: '', text: 'Select' },
-  { value: 'condensed power crystal', text: 'Condensed Power Crystal' },
-  { value: 'twilight mark', text: 'Twilight Mark' },
-  { value: 'berserked', text: 'Berserked' }
-];
-
-const eyeOptions = [
-  { value: '', text: 'Select' },
-  { value: 'aquatic letter eye', text: 'Aquatic Letter Eye' },
-  { value: 'black bean mark', text: 'Black Bean Mark' },
-  { value: 'papulatus mark', text: 'Papulatus Mark' },
-  { value: 'magic eye patch', text: 'Magic Eye Patch' }
-];
-
-const topOptions = [
-  { value: '', text: 'Select' },
-  { value: 'cra top', text: 'Cra Top' },
-  { value: 'absolab overall', text: 'Absolab Overall' },
-  { value: 'arcane overall', text: 'Arcane Overall' },
-  { value: 'eternal top', text: 'Eternal Top' },
-];
-
-const bottomOptions = [
-  { value: '', text: 'Select' },
-  { value: 'cra bottom', text: 'Cra Bottom' },
-  { value: 'absolab overall', text: 'Absolab Overall' },
-  { value: 'eternal bottom', text: 'Eternal Bottom' }
-];
-const shoesOptions = [
-  { value: '', text: 'Select' },
-  // { value: 'pensalir shoes', text: 'Pensalir Shoes' },
-  // { value: 'ranmaru shoes', text: 'Ranmaru Shoes' },
-  { value: 'absolab shoes', text: 'Absolab Shoes' },
-  { value: 'arcane shoes', text: 'Arcane Shoes' },
-  { value: 'eternal shoes', text: 'Eternal Shoes' }
-];
-
-const earringOptions = [
-  { value: '', text: 'Select' },
-  { value: 'dea sidus earring', text: 'Dea Sidus Earring' },
-  { value: 'reinforced gollux earring', text: 'Reinforced Gollux Earring' },
-  { value: 'superior gollux earring', text: 'Superior Gollux Earring' },
-  { value: 'command force earring', text: 'Command Force Earring' }
-];
-
-const shoulderOptions = [
-  { value: '', text: 'Select' },
-  { value: 'royal black metal shoulder', text: 'Royal Black Metal Shoulder' },
-  // { value: 'ranmaru shoulder', text: 'Ranmaru Shoulder' },
-  { value: 'absolab shoulder', text: 'Absolab Shoulder' },
-  { value: 'arcane shoulder', text: 'Arcane Shoulder' },
-  { value: 'eternal shoulder', text: 'Eternal Shoulder' }
-];
-
-const gloveOptions = [
-  { value: '', text: 'Select' },
-  // { value: 'pensalir gloves', text: 'Pensalir Gloves' },
-  // { value: 'ranmaru gloves', text: 'Ranmaru Gloves' },
-  { value: 'absolab gloves', text: 'Absolab Gloves' },
-  { value: 'arcane gloves', text: 'Arcane Gloves' },
-  { value: 'eternal gloves', text: 'Eternal Gloves' }
-];
-
-const emblemOptions = [
-  { value: '', text: 'Select' },
-  { value: 'lvl 100 emblem', text: 'Lvl 100 Emblem' },
-  { value: 'mitra emblem', text: 'Mitra Emblem' }
-];
-
-const secondaryOptions = [
-  { value: '', text: 'Select' },
-  { value: 'lvl 100 secondary', text: 'Lvl 100 Secondary' },
-  { value: 'pno secondary', text: 'Pno Secondary' }
-];
-
-const capeOptions = [
-  { value: '', text: 'Select' },
-  // { value: 'pensalir cape', text: 'Pensalir Cape' },
-  // { value: 'ranmaru cape', text: 'Ranmaru Cape' },
-  { value: 'absolab cape', text: 'Absolab Cape' },
-  { value: 'arcane cape', text: 'Arcane Cape' },
-  { value: 'eternal cape', text: 'Eternal Cape' }
-];
-
-const statArray = [
-  { min: 0, max: 94, value: 5 },
-  { min: 95, max: 107, value: 8 },
-  { min: 108, max: 117, value: 10 },
-  { min: 118, max: 127, value: 15 },
-  { min: 128, max: 137, value: 20 },
-  { min: 138, max: Infinity, value: 25 }
-];
 function getValue(stat) {
   for (let range of statArray) {
     if (stat >= range.min && stat <= range.max) {
@@ -142,159 +13,20 @@ function getValue(stat) {
   return null; // or some default
 }
 
-const imageMap = {
-  // Ring
-  'reinforced gollux ring': 'reinforcedRing.png',
-  'superior gollux ring': 'superiorGolluxRing.png',
-  'meister ring': 'meisterRing.png',
-  'endless terror': 'endlessTerror.png',
-  'kanna\'s treasure': 'kannasTreasure.png',
-
-  // Pocket
-  'pink holy cup': 'pinkHolyCup.png',
-  'cursed spell book': 'cursedSpellBook.png',
-
-  // Pendant
-  'dominator': 'dominator.png',
-  'superior gollux pendant': 'superiorGolluxPendant.png',
-  'source of suffering': 'sourceOfSuffering.png',
-  'reinforced gollux pendant' : 'reinforcedGolluxPendant.png',
-
-  // Weapon
-  'arcane': 'arcaneWeapon.png',
-  'genesis': 'genesisWeapon.png',
-
-  // Belt
-  'golden clover belt': 'goldenCloverBelt.png',
-  'superior gollux belt': 'superiorGolluxBelt.png',
-  'dreamy belt': 'dreamyBelt.png',
-  'reinforced gollux belt' : 'reinforcedGolluxBelt.png',
-
-  // Hat
-  'cra helmet': 'craHat.png',
-  'absolab helmet': 'absoHat.png',
-  'arcane helmet': 'arcaneHat.png',
-  'eternal helmet': 'eternalHat.png',
-
-  // Face Accessory
-  'condensed power crystal': 'condensedPowerCrystal.png',
-  'twilight mark': 'twilightMark.png',
-  'berserked': 'berserked.png',
-
-  // Eye Accessory
-  'aquatic letter eye': 'aquaticLetterEye.png',
-  'black bean mark': 'blackBeanMark.png',
-  'papulatus mark': 'papulatusMark.png',
-  'magic eye patch': 'magicEyePatch.png',
-
-  // Top
-  'cra top': 'craTop.png',
-  'absolab overall': 'absoOverall.png',
-  'arcane overall': 'arcaneOverall.png',
-  'eternal top': 'eternalTop.png',
-
-  // Bottom
-  'cra bottom': 'craBottom.png',
-  'eternal bottom': 'eternalBottom.png',
-
-  // Shoes
-  'pensalir shoes': 'pensalirShoes.png',
-  'ranmaru shoes': 'ranmaruShoes.png',
-  'absolab shoes': 'absoShoes.png',
-  'arcane shoes': 'arcaneShoes.png',
-  'eternal shoes': 'eternalShoes.png',
-
-  // Earrings
-  'dea sidus earring': 'deaSidusEarring.png',
-  'reinforced gollux earring': 'reinforcedGolluxEarring.png',
-  'superior gollux earring': 'superiorGolluxEarring.png',
-  'command force earring': 'commandForceEarring.png',
-
-  // Shoulder
-  'royal black metal shoulder': 'royalBlackMetalShoulder.png',
-  'ranmaru shoulder': 'ranmaruShoulder.png',
-  'absolab shoulder': 'absoShoulder.png',
-  'arcane shoulder': 'arcaneShoulder.png',
-  'eternal shoulder': 'eternalShoulder.png',
-
-  // Gloves
-  'pensalir gloves': 'pensalirGloves.png',
-  'ranmaru gloves': 'ranmaruGloves.png',
-  'absolab gloves': 'absoGloves.png',
-  'arcane gloves': 'arcaneGloves.png',
-  'eternal gloves': 'eternalGloves.png',
-
-  // Emblem
-  'lvl 100 emblem': 'lvl100Emblem.png',
-  'mitra emblem': 'mitraEmblem.png',
-
-  // Secondary
-  'lvl 100 secondary': 'lvl100Secondary.png',
-  'pno secondary': 'pnoSecondary.png',
-
-  // Cape
-  'pensalir cape': 'pensalirCape.png',
-  'ranmaru cape': 'ranmaruCape.png',
-  'absolab cape': 'absoCape.png',
-  'arcane cape': 'arcaneCape.png',
-  'eternal cape': 'eternalCape.png'
-};
-
-
-const ringDropdowns = document.querySelectorAll('.input1, .input2, .input3, .input4');
-const pocketDropdowns = document.querySelectorAll('.input5');
-const pendantDropdowns = document.querySelectorAll('.input6, .input7');
-const weaponDropdowns = document.querySelectorAll('.input8');
-const beltDropdowns = document.querySelectorAll('.input9');
-const hatDropdowns = document.querySelectorAll('.input10');
-const faceDropdowns = document.querySelectorAll('.input11');
-const eyeDropdowns = document.querySelectorAll('.input12');
-const topDropdowns = document.querySelectorAll('.input13');
-const bottomDropdowns = document.querySelectorAll('.input14');
-const shoesDropdowns = document.querySelectorAll('.input15');
-const earringDropdowns = document.querySelectorAll('.input16');
-const shoulderDropdowns = document.querySelectorAll('.input17');
-const glovesDropdowns = document.querySelectorAll('.input18');
-const emblemDropdowns = document.querySelectorAll('.input19');
-const badgeDropdowns = document.querySelectorAll('.input20');
-const medalDropdowns = document.querySelectorAll('.input21');
-const secondaryDropdowns = document.querySelectorAll('.input22');
-const capeDropdowns = document.querySelectorAll('.input23');
-const heartDropdowns = document.querySelectorAll('.input24');
-const dropdownMap = [
-  { dropdowns: ringDropdowns, options: ringOptions },
-  { dropdowns: pocketDropdowns, options: pocketOptions },
-  { dropdowns: pendantDropdowns, options: pendantOptions },
-  { dropdowns: weaponDropdowns, options: weaponOptions },
-  { dropdowns: beltDropdowns, options: beltOptions },
-  { dropdowns: hatDropdowns, options: hatOptions },
-  { dropdowns: faceDropdowns, options: faceOptions },
-  { dropdowns: eyeDropdowns, options: eyeOptions },
-  { dropdowns: topDropdowns, options: topOptions },
-  { dropdowns: bottomDropdowns, options: bottomOptions },
-  { dropdowns: shoesDropdowns, options: shoesOptions },
-  { dropdowns: earringDropdowns, options: earringOptions },
-  { dropdowns: shoulderDropdowns, options: shoulderOptions },
-  { dropdowns: glovesDropdowns, options: gloveOptions },
-  { dropdowns: emblemDropdowns, options: emblemOptions },
-  // { dropdowns: badgeDropdowns, options: badgeOptions },
-  // { dropdowns: medalDropdowns, options: medalOptions },
-  { dropdowns: secondaryDropdowns, options: secondaryOptions },
-  { dropdowns: capeDropdowns, options: capeOptions }
-  // { dropdowns: heartDropdowns, options: heartOptions },
-];
-
-dropdownMap.forEach(({ dropdowns, options }) => {
-  dropdowns.forEach(select => {
-    select.innerHTML = '';
-    options.forEach(opt => {
-      const option = document.createElement('option');
-      option.value = opt.value;
-      option.textContent = opt.text;
-      select.appendChild(option);
+document.addEventListener('DOMContentLoaded', () => {
+  dropdownMap.forEach(({ dropdowns, options }) => {
+    dropdowns.forEach(select => {
+      select.innerHTML = '';
+      options.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt.value;
+        option.textContent = opt.text;
+        select.appendChild(option);
+      });
     });
   });
 });
+
 const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
 
 class Armor {
@@ -320,54 +52,6 @@ class Armor {
     return this.name;
   }
 }
-function updateStarsDisplay(starLevel) {
-  stars.forEach((s, i) => {
-    s.style.color = i < starLevel ? 'yellow' : 'white';
-  });
-}
-const stats = { //stat, hp, speed, gloves
-  0: [2, 5, 0, 0],
-  1: [2, 5, 0, 0],
-  2: [2, 5, 1, 0],
-  3: [2, 10, 1, 0],
-  4: [2, 10, 1, 1],
-  5: [3, 15, 1, 0],
-  6: [3, 15, 1, 1],
-  7: [3, 20, 1, 0],
-  8: [3, 20, 1, 1],
-  9: [3, 25, 1, 0],
-  10: [3, 25, 2, 1],
-  11: [3, 25, 2, 0],
-  12: [3, 25, 2, 1],
-  13: [3, 25, 2, 1],
-  14: [3, 25, 2, 1]
-};
-const highStats = [
-  // 15★ → 16★ to 21★ → 22★
-  // Format: [visibleStat, nonWeaponAtt, weaponAtt]
-  // Indexing: starforceStats[star - 15][equipLevelRangeIndex]
-  [
-    [7, 7, 6], [9, 8, 7], [11, 9, 8], [13, 10, 9], [15, 12, 13], [17, 14, 114]
-  ],
-  [
-    [7, 8, 7], [9, 9, 8], [11, 10, 9], [13, 11, 9], [15, 13, 13], [17, 15, 15]
-  ],
-  [
-    [7, 9, 7], [9, 10, 8], [11, 11, 9], [13, 12, 10], [15, 14, 14], [17, 16, 16]
-  ],
-  [
-    [7, 10, 8], [9, 11, 9], [11, 12, 10], [13, 13, 11], [15, 15, 14], [17, 17, 17]
-  ],
-  [
-    [7, 11, 9], [9, 12, 10], [11, 13, 11], [13, 14, 12], [15, 16, 15], [17, 18, 18]
-  ],
-  [
-    [null], [9, 13, 11], [11, 14, 12], [13, 15, 13], [15, 17, 16], [17, 19, 19]
-  ],
-  [
-    [null], [9, 15, 12], [11, 16, 13], [13, 17, 14], [15, 19, 17], [17, 21, 21]
-  ]
-];
 
 function getStatIndexFromEquipLevel(level) {
   if (level >= 128 && level <= 137) return 0;
@@ -379,16 +63,6 @@ function getStatIndexFromEquipLevel(level) {
   return -1;
 }
 
-const noHP = ["gloves","shoes","earrings","eye accessory"];
-// Job Stat +2
-// Non-Weapon's Visible DEF +5%
-// Overall's Visible DEF +5%
-// Category A's Max HP +5
-// Weapon's Max MP +5
-// Weapon's Visible ATT +2%
-// Weapon's Visible Magic ATT +2%
-// Shoes' Speed +1
-// Shoes' Jump +1
 
 //finds stat gained at given star
 function statAtStar(itemLevel,starForce,equipType = 'ring'){
@@ -436,7 +110,6 @@ function statAtStar(itemLevel,starForce,equipType = 'ring'){
     result["Attack Power"] = atk;
     result["Magic Attack"] = atk;
   }
-
   return result;
 }
 
@@ -453,64 +126,6 @@ function totalStats(itemLevel, starForce, baseDefense = 0, baseAtk = 0, equipTyp
 
   return stats;
 }
-const itemsByLevel = {
-  140: [
-    'reinforced gollux ring',
-    'reinforced gollux pendant',
-    'reinforced gollux belt',
-    'reinforced gollux earring',
-    'meister ring',
-    "kanna's treasure",
-    'pink holy cup',
-    'dominator',
-    'cra helmet'
-  ],
-
-  150: [
-    'superior gollux ring',
-    'superior gollux pendant',
-    'superior gollux belt',
-    'superior gollux earring',
-    'golden clover belt',
-    'dea sidus earring',
-    'command force earring'
-  ],
-
-  160: [
-    'absolab helmet',
-    'absolab shoes',
-    'absolab gloves',
-    'absolab shoulder',
-    'absolab cape',
-    'absolab overall',
-    'cursed spell book',
-    'source of suffering'
-  ],
-
-  200: [
-    'arcane weapon',
-    'arcane helmet',
-    'arcane shoes',
-    'arcane gloves',
-    'arcane shoulder',
-    'arcane cape',
-    'arcane overall',
-    'mitra emblem',
-    'endless terror',
-    'genesis weapon',
-    'dreamy belt'
-  ],
-
-  250: [
-    'eternal helmet',
-    'eternal shoes',
-    'eternal gloves',
-    'eternal shoulder',
-    'eternal cape',
-    'eternal top',
-    'eternal bottom'
-  ]
-};
 
 function findItemLevel(itemName) {
   for (const [level, items] of Object.entries(itemsByLevel)) {
@@ -520,6 +135,26 @@ function findItemLevel(itemName) {
   }
   return null; // or "Unknown"
 }
+const stars = document.querySelectorAll('.star');
+function updateStarsDisplay(starLevel) {
+  stars.forEach((s, i) => {
+    s.style.color = i < starLevel ? 'yellow' : 'white';
+  });
+}
+stars.forEach((star, index) => {
+  star.addEventListener('click', () => {
+    stars.forEach((s, i) => {
+      s.style.color = i <= index ? 'yellow' : 'white';
+    });
+
+    if (currentlySelected !== null && equips[currentlySelected]) {
+      const selectedEquip = equips[currentlySelected];
+      selectedEquip.starLevel = index + 1;
+      updateStarStat();
+    }
+
+  });
+});
 
 function updateStarStat(){
   if (currentlySelected !== null && equips[currentlySelected]) {
@@ -530,7 +165,6 @@ function updateStarStat(){
 
       const updatedStats = totalStats(itemLevel, selectedEquip.starLevel, 0, 0, equipType);
       console.log('Updated Stats:', updatedStats);
-
       // Update starForceStat values in the UI
       const armorStatsContainer = document.querySelector('.ArmorStats');
       const starForceSpans = armorStatsContainer.querySelectorAll('.starForceStat');
@@ -553,11 +187,8 @@ function updateStarStat(){
           span.style.color = 'white';
         }
       });
-      
       console.log('Number of yellow stars: ', selectedEquip.starLevel);
     }
-
-  
 }
 
 function updateImageAndBackground(input) {
@@ -609,22 +240,5 @@ inputs.forEach((input, index) => { //when box is clicked
     updateImageAndBackground(input);
     updateStarsDisplay(armor.starLevel);
     console.log(findItemLevel(selectedValue));
-  });
-});
-
-const stars = document.querySelectorAll('.star');
-
-stars.forEach((star, index) => {
-  star.addEventListener('click', () => {
-    stars.forEach((s, i) => {
-      s.style.color = i <= index ? 'yellow' : 'white';
-    });
-
-    if (currentlySelected !== null && equips[currentlySelected]) {
-      const selectedEquip = equips[currentlySelected];
-      selectedEquip.starLevel = index + 1;
-      updateStarStat();
-    }
-
   });
 });
