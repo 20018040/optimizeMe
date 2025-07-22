@@ -1,8 +1,27 @@
-const inputs = document.querySelectorAll('select');
+const itemInputs = document.querySelectorAll('select.dropdown');
 let currentlySelected = null;
 import {imageMap,itemsByLevel} from './items.js';
 import {dropdownMap} from './dropDownData.js';
 import {statArray,stats,highStats,noHP} from './starForceStats.js';
+import { cubeRates } from './cubeRates.js';
+
+const potentialOptions = {
+  "first": [
+    ["All Stat",9],
+    ["STR", 12],
+    ["DEX", 12],
+    ["INT", 12],
+    ["LUK", 12],
+    ["HP", 12],
+  ]
+}
+// for (const key in cubeRates["lvl120to200"]) {
+//   console.log(key); // e.g., "secondary", "bottom", etc.
+  
+//   for(const stat in cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"]){
+//     console.log(cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"][stat][0], cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"][stat][1]);
+//   }
+// }
 function getValue(stat) {
   for (let range of statArray) {
     if (stat >= range.min && stat <= range.max) {
@@ -11,7 +30,7 @@ function getValue(stat) {
   }
   return null; // or some default
 }
-
+//populating item options 
 document.addEventListener('DOMContentLoaded', () => {
   dropdownMap.forEach(({ dropdowns, options }) => {
     dropdowns.forEach(select => {
@@ -25,6 +44,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+//populating potentials depending on item
+function populateDropDown(downs, lists){
+  downs.forEach(select => {
+    select.innerHTML = '';
+    lists.forEach(opt => {
+      const option = document.createElement('option');
+      const value = opt[0]+opt[1].toString();
+      option.value,option.textContent = value;
+      select.appendChild(option);
+    });
+  });
+}
+function updatePotential(itemType){
+  let type = itemType.toLowerCase();
+  const potentialInfos = cubeRates["lvl120to200"][type]["red"]["legendary"];
+  console.log(potentialInfos);
+  const firstDropdowns = document.querySelectorAll('.first');
+  const secondDropdowns = document.querySelectorAll('.second');
+  const thirdDropdowns = document.querySelectorAll('.third');
+  populateDropDown(firstDropdowns, potentialInfos["first_line"]);
+  populateDropDown(secondDropdowns, potentialInfos["second_line"]);
+  populateDropDown(thirdDropdowns, potentialInfos["third_line"]);
+}
+updatePotential("ring");
 
 const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
 
@@ -215,7 +258,7 @@ function updateImageAndBackground(input) {
 }
 
 // Set up dropdown behavior
-inputs.forEach((input, index) => { //when box is clicked 
+itemInputs.forEach((input, index) => { //when box is clicked 
   input.addEventListener('focus', () => {
     currentlySelected = index;
 
