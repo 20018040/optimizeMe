@@ -56,10 +56,10 @@ function populateDropDown(downs, lists){
     });
   });
 }
+//updates potential choosing options depending on itemtype selected
 function updatePotential(itemType){
   let type = itemType.toLowerCase();
   const potentialInfos = cubeRates["lvl120to200"][type]["red"]["legendary"];
-  console.log(potentialInfos);
   const firstDropdowns = document.querySelectorAll('.first');
   const secondDropdowns = document.querySelectorAll('.second');
   const thirdDropdowns = document.querySelectorAll('.third');
@@ -69,6 +69,33 @@ function updatePotential(itemType){
 }
 updatePotential("ring");
 
+//itemTypes that need different conversions : WSE, gloves, maybe hat 
+function trimRates(line,options,mainStat){
+  let matches = [];
+  if (mainStat !== "MAX HP %"){
+    matches = line.filter(entry  => entry.includes("All Stats %") || entry.includes(mainStat));
+  }
+  else {
+    matches = line.filter(entry => entry.includes(mainStat));
+  }
+  matches.forEach(match =>{
+    match.splice(0,1);
+    options.push(match);
+  });
+}
+function findExpectedReturn(itemType,cubeType, stat){
+  //cube rates. First/second/third rates could be found by ["first_line"]["second_line"]..
+  const rates = cubeRates["lvl120to200"][itemType][cubeType]["legendary"];
+  const firstLine = rates["first_line"];
+  const secondLine = rates["second_line"];
+  const thirdLine = rates["third_line"];
+  let line1_options = [], line2_options = [], line3_options = [];
+  trimRates(firstLine, line1_options,"LUK %");
+  trimRates(secondLine, line2_options,"LUK %");
+  trimRates(thirdLine, line3_options,"LUK %");
+  console.log(line1_options,line2_options,line3_options);
+}
+findExpectedReturn("bottom","red",24);
 const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
 
 class Armor {
