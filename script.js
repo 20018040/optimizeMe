@@ -70,18 +70,39 @@ function updatePotential(itemType){
 updatePotential("ring");
 
 //itemTypes that need different conversions : WSE, gloves, maybe hat 
-function trimRates(line,options,mainStat){
+//line possible options. Options where lines get trimmed into mainStat stat looking for 
+//allStatEQ : ALL Stat to stat// default 1.1
+function trimRates(line,options,mainStat,allStatEQ = 1.1){
   let matches = [];
   if (mainStat !== "MAX HP %"){
     matches = line.filter(entry  => entry.includes("All Stats %") || entry.includes(mainStat));
+  
   }
   else {
     matches = line.filter(entry => entry.includes(mainStat));
   }
   matches.forEach(match =>{
+    if(match.includes("All Stats %")){
+      // match[1] = parseFloat((match[1] * allStatEQ).toFixed(2));
+    }
+    match[2] = match[2] *0.01;
     match.splice(0,1);
     options.push(match);
   });
+}
+function normalizeWithDumpster(line) {
+  let total = line.reduce((sum, entry) => sum + entry[1], 0);
+  if (total > 1) {
+    // if sum > 1, scale down all probabilities proportionally
+    return line.map(([stat, prob]) => [stat, prob / total]);
+  }
+  else if (total < 1) {
+    // Add dumpster
+    return [...line, [0, 1 - total]];
+  }
+  else {
+    return line; // already sums to 1
+  }
 }
 function findExpectedReturn(itemType,cubeType, stat){
   //cube rates. First/second/third rates could be found by ["first_line"]["second_line"]..
@@ -94,6 +115,44 @@ function findExpectedReturn(itemType,cubeType, stat){
   trimRates(secondLine, line2_options,"LUK %");
   trimRates(thirdLine, line3_options,"LUK %");
   console.log(line1_options,line2_options,line3_options);
+  line1_options = normalizeWithDumpster(line1_options);
+  line2_options = normalizeWithDumpster(line2_options);
+  line3_options = normalizeWithDumpster(line3_options);
+  console.log(line1_options,line2_options,line3_options);
+  //finding all possible combinations with useful options
+  const results = [];
+  for (const l1 of line1_options) {
+    for (const l2 of line2_options) {
+      for (const l3 of line3_options) {
+        const totalStat = l1[0] + l2[0] + l3[0];
+        const probability = l1[1] * l2[1] * l3[1];
+        results.push([totalStat, probability]);
+      }
+    }
+  }
+  console.log(results);
+  const statDistribution = new Map();
+
+  results.forEach(([stat, prob]) => {
+    statDistribution.set(stat, (statDistribution.get(stat) || 0) + prob);
+  });
+  console.log(statDistribution);
+  let prob_gt_24 = 0;
+  let expected_stat = 0;
+
+  for (const [stat, prob] of statDistribution.entries()) {
+    if (stat >= 33) prob_gt_24 += prob;
+    expected_stat += stat * prob;
+  }
+
+  const expected_trials = prob_gt_24 > 0 ? 1 / prob_gt_24 : Infinity;
+  const expected_stat_per_currency = expected_stat / 10_000_000; // cost = 10 million
+
+  // Step 5: Output results
+  console.log(`Probability of getting >24% stat: ${(prob_gt_24 * 100).toFixed(4)}%`);
+  console.log(`Expected number of trials: ${expected_trials.toFixed(2)}`);
+  console.log(`Expected stat per trial: ${expected_stat.toFixed(2)}%`);
+  console.log(`Expected stat per 10M currency: ${expected_stat_per_currency.toFixed(8)}`);
 }
 findExpectedReturn("bottom","red",24);
 const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
