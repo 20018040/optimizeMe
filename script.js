@@ -105,8 +105,9 @@ function normalizeWithDumpster(line) {
   }
 }
 function findExpectedReturn(itemType,cubeType, stat){
-  //cube rates. First/second/third rates could be found by ["first_line"]["second_line"]..
+  // cube rates. First/second/third rates could be found by ["first_line"]["second_line"]..
   const rates = cubeRates["lvl120to200"][itemType][cubeType]["legendary"];
+
   const firstLine = rates["first_line"];
   const secondLine = rates["second_line"];
   const thirdLine = rates["third_line"];
@@ -114,11 +115,9 @@ function findExpectedReturn(itemType,cubeType, stat){
   trimRates(firstLine, line1_options,"LUK %");
   trimRates(secondLine, line2_options,"LUK %");
   trimRates(thirdLine, line3_options,"LUK %");
-  console.log(line1_options,line2_options,line3_options);
   line1_options = normalizeWithDumpster(line1_options);
   line2_options = normalizeWithDumpster(line2_options);
   line3_options = normalizeWithDumpster(line3_options);
-  console.log(line1_options,line2_options,line3_options);
   //finding all possible combinations with useful options
   const results = [];
   for (const l1 of line1_options) {
@@ -130,29 +129,38 @@ function findExpectedReturn(itemType,cubeType, stat){
       }
     }
   }
-  console.log(results);
   const statDistribution = new Map();
 
-  results.forEach(([stat, prob]) => {
-    statDistribution.set(stat, (statDistribution.get(stat) || 0) + prob);
+  results.forEach(([total, prob]) => {
+    statDistribution.set(total, (statDistribution.get(total) || 0) + prob);
   });
-  console.log(statDistribution);
   let prob_gt_24 = 0;
   let expected_stat = 0;
 
-  for (const [stat, prob] of statDistribution.entries()) {
-    if (stat >= 33) prob_gt_24 += prob;
-    expected_stat += stat * prob;
+  for (const [total, prob] of statDistribution.entries()) {
+    // if (total >= stat) prob_gt_24 += prob;
+    // expected_stat += total * prob;
+    if (total >= stat){
+    prob_gt_24 += prob;
+    expected_stat += (total-24) * prob;
+    }
+    console.log(total, prob, "Expected_stat : ",expected_stat);
   }
 
   const expected_trials = prob_gt_24 > 0 ? 1 / prob_gt_24 : Infinity;
-  const expected_stat_per_currency = expected_stat / 10_000_000; // cost = 10 million
-
+  const cube_cost = cubeType === "red"
+   ? 11_000_000 
+   : cubeType === "black" 
+   ? 22_000_000
+   : undefined;
+  
+  const expected_stat_per_currency = 1/expected_stat; //#of trials need to gain 1 percent of  
+  //console.log(cube_cost, expected_stat_per_currency);
   // Step 5: Output results
   console.log(`Probability of getting >24% stat: ${(prob_gt_24 * 100).toFixed(4)}%`);
   console.log(`Expected number of trials: ${expected_trials.toFixed(2)}`);
   console.log(`Expected stat per trial: ${expected_stat.toFixed(2)}%`);
-  console.log(`Expected stat per 10M currency: ${expected_stat_per_currency.toFixed(8)}`);
+  console.log(`Expected stat per 10M currency: ${expected_stat_per_currency.toFixed(30)}`);
 }
 findExpectedReturn("bottom","red",24);
 const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
