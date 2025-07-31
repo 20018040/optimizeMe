@@ -98,6 +98,19 @@ export const imageMap = {
   };
  //-----------------------stores item levels 
 export const itemsByLevel = {
+  100: [
+    'aquatic letter eye'
+  ],
+  110: [
+    'condensed power crystal'
+  ],
+  120: [ 
+    'royal black metal shoulder'
+  ],
+  135: [
+    'black bean mark'
+  ]
+  ,
   140: [
     'reinforced gollux ring',
     'reinforced gollux pendant',
@@ -107,7 +120,11 @@ export const itemsByLevel = {
     "kanna's treasure",
     'pink holy cup',
     'dominator',
-    'cra helmet'
+    'cra helmet',
+    'twilight mark'
+  ],
+  145: [
+    'papulatus mark'
   ],
 
   150: [
@@ -117,7 +134,8 @@ export const itemsByLevel = {
     'superior gollux earring',
     'golden clover belt',
     'dea sidus earring',
-    'command force earring'
+    'cra top',
+    'cra bottom'
   ],
 
   160: [
@@ -128,7 +146,9 @@ export const itemsByLevel = {
     'absolab cape',
     'absolab overall',
     'cursed spell book',
-    'source of suffering'
+    'source of suffering',
+    'berserked',
+    'magic eye patch'
   ],
 
   200: [
@@ -142,7 +162,8 @@ export const itemsByLevel = {
     'mitra emblem',
     'endless terror',
     'genesis weapon',
-    'dreamy belt'
+    'dreamy belt',
+    'command force earring'
   ],
 
   250: [

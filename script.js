@@ -144,7 +144,6 @@ function findExpectedReturn(itemType,cubeType, stat){
     prob_gt_24 += prob;
     expected_stat += (total-24) * prob;
     }
-    console.log(total, prob, "Expected_stat : ",expected_stat);
   }
 
   const expected_trials = prob_gt_24 > 0 ? 1 / prob_gt_24 : Infinity;
@@ -300,7 +299,6 @@ function updateStarStat(){
       const equipType = 'ring';
 
       const updatedStats = totalStats(itemLevel, selectedEquip.starLevel, 0, 0, equipType);
-      console.log('Updated Stats:', updatedStats);
       // Update starForceStat values in the UI
       const armorStatsContainer = document.querySelector('.ArmorStats');
       const starForceSpans = armorStatsContainer.querySelectorAll('.starForceStat');
@@ -323,7 +321,6 @@ function updateStarStat(){
           span.style.color = 'white';
         }
       });
-      console.log('Number of yellow stars: ', selectedEquip.starLevel);
     }
 }
 
@@ -353,14 +350,13 @@ function updateImageAndBackground(input) {
 
 // Set up dropdown behavior
 itemInputs.forEach((input, index) => { //when box is clicked 
+  const selectedEquip = equips[index];
   input.addEventListener('focus', () => {
     currentlySelected = index;
 
-    const selectedEquip = equips[index];
     if (selectedEquip) {
       updateStarsDisplay(selectedEquip.starLevel || 0);
       updateStarStat();
-      console.log(selectedEquip.name, " ",selectedEquip.level);
       updateImageAndBackground(input);
     }
 
@@ -375,6 +371,5 @@ itemInputs.forEach((input, index) => { //when box is clicked
     currentlySelected = index;
     updateImageAndBackground(input);
     updateStarsDisplay(armor.starLevel);
-    console.log(findItemLevel(selectedValue));
   });
 });
