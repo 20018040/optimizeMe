@@ -15,13 +15,7 @@ const potentialOptions = {
     ["HP", 12],
   ]
 }
-// for (const key in cubeRates["lvl120to200"]) {
-//   console.log(key); // e.g., "secondary", "bottom", etc.
-  
-//   for(const stat in cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"]){
-//     console.log(cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"][stat][0], cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"][stat][1]);
-//   }
-// }
+
 function getValue(stat) {
   for (let range of statArray) {
     if (stat >= range.min && stat <= range.max) {
@@ -59,6 +53,7 @@ function populateDropDown(downs, lists){
 //updates potential choosing options depending on itemtype selected
 function updatePotential(itemType){
   let type = itemType.toLowerCase();
+  console.log(type);
   const potentialInfos = cubeRates["lvl120to200"][type]["red"]["legendary"];
   const firstDropdowns = document.querySelectorAll('.first');
   const secondDropdowns = document.querySelectorAll('.second');
@@ -67,7 +62,6 @@ function updatePotential(itemType){
   populateDropDown(secondDropdowns, potentialInfos["second_line"]);
   populateDropDown(thirdDropdowns, potentialInfos["third_line"]);
 }
-updatePotential("ring");
 
 //itemTypes that need different conversions : WSE, gloves, maybe hat 
 //line possible options. Options where lines get trimmed into mainStat stat looking for 
@@ -165,10 +159,11 @@ findExpectedReturn("bottom","red",24);
 const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
 
 class Armor {
-  constructor(level = 0, starLevel = 0) {
+  constructor(level = 0, starLevel = 0, type = 'ring') {
     this.level = level;
     this.name = '';
     this.starLevel = starLevel;
+    this.type = type;
     this.flatStats = {
       STR: null, DEX: null, INT: null, LUK: null,
       Defense: null, HP: null, MP: null, ATK: null, MATK: null,
@@ -197,7 +192,14 @@ function getStatIndexFromEquipLevel(level) {
   if (level === 250) return 5;
   return -1;
 }
-
+function getMaxStars(level) {
+  if (level <= 94) return 5;
+  if (level <= 107) return 8;
+  if (level <= 117) return 10;
+  if (level <= 127) return 15;
+  if (level <= 137) return 20;
+  return 25;
+}
 
 //finds stat gained at given star
 function statAtStar(itemLevel,starForce,equipType = 'ring'){
@@ -271,10 +273,19 @@ function findItemLevel(itemName) {
   return null; // or "Unknown"
 }
 const stars = document.querySelectorAll('.star');
-function updateStarsDisplay(starLevel) {
+function updateStarsDisplay(starLevel,equipLevel) {
   stars.forEach((s, i) => {
     s.style.color = i < starLevel ? 'yellow' : 'white';
   });
+  const maxStars = getMaxStars(equipLevel);
+  const starElements = document.querySelectorAll('.stars .star');
+    starElements.forEach((star, index) => {
+      if (index < maxStars) {
+        star.style.display = 'inline';
+      } else {
+        star.style.display = 'none';
+      }
+    });
 }
 stars.forEach((star, index) => {
   star.addEventListener('click', () => {
@@ -296,8 +307,8 @@ function updateStarStat(){
       const selectedEquip = equips[currentlySelected];
       const itemLevel = selectedEquip.level || 150;
       // const equipType = selectedEquip.name?.toLowerCase().includes('ring') ? 'ring' : 'other';
-      const equipType = 'ring';
-
+      const equipType =  equips[currentlySelected].type || 'ring';
+      
       const updatedStats = totalStats(itemLevel, selectedEquip.starLevel, 0, 0, equipType);
       // Update starForceStat values in the UI
       const armorStatsContainer = document.querySelector('.ArmorStats');
@@ -347,29 +358,63 @@ function updateImageAndBackground(input) {
     }
   }
 }
-
+function findType(index){
+  if(index ===7){
+    return 'weapon';
+  }else if(index ===8){
+    return 'belt';
+  }else if(index ===9){
+    return 'hat';
+  }else if(index ===12){//overall later
+    return 'top';
+  }else if(index ===13){
+    return 'bottom';
+  }else if(index ===14){
+    return 'shoes';
+  }else if(index ===16){
+    return 'shoulder';
+  }else if(index ===17){
+    return 'gloves';
+  }else if(index ===18){
+    return 'emblem';
+  }else if(index ===19){
+    return 'badge';
+  }else if(index ===20){
+    return 'medal';
+  }else if(index ===21){
+    return 'secondary';
+  }else if(index ===22){
+    return 'cape';
+  }else if(index ===23){
+    return 'heart';
+  }
+  return 'ring'
+    
+}
 // Set up dropdown behavior
 itemInputs.forEach((input, index) => { //when box is clicked 
-  const selectedEquip = equips[index];
+  // const selectedEquip = equips[index];
   input.addEventListener('focus', () => {
+    const selectedEquip = equips[index];
     currentlySelected = index;
-
     if (selectedEquip) {
-      updateStarsDisplay(selectedEquip.starLevel || 0);
+      updateStarsDisplay(selectedEquip.starLevel || 0,selectedEquip.level);
       updateStarStat();
       updateImageAndBackground(input);
+      updatePotential(selectedEquip.type);
     }
 
   });
 
   input.addEventListener('change', () => { //when input actually changed
     const selectedValue = input.value;
-    const armor = new Armor();
+    const armor = new Armor(findItemLevel(selectedValue),0,findType(index));
     armor.name = selectedValue;
-    armor.level = findItemLevel(selectedValue);
     equips[index] = armor;
     currentlySelected = index;
     updateImageAndBackground(input);
-    updateStarsDisplay(armor.starLevel);
+    updateStarsDisplay(armor.starLevel,armor.level);
+    updatePotential(armor.type);
+    console.log("Armor: ", armor.name, ". Type :", armor.type);
   });
 });
