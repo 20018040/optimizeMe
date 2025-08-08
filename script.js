@@ -1,9 +1,11 @@
 const itemInputs = document.querySelectorAll('select.dropdown');
+const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
 let currentlySelected = null;
 import {imageMap,itemsByLevel} from './items.js';
 import {dropdownMap} from './dropDownData.js';
 import {statArray,stats,highStats,noHP} from './starForceStats.js';
 import { cubeRates } from './cubeRates.js';
+import { calcExpected } from './starForce.js';
 
 const potentialOptions = {
   "first": [
@@ -15,13 +17,7 @@ const potentialOptions = {
     ["HP", 12],
   ]
 }
-// for (const key in cubeRates["lvl120to200"]) {
-//   console.log(key); // e.g., "secondary", "bottom", etc.
-  
-//   for(const stat in cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"]){
-//     console.log(cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"][stat][0], cubeRates["lvl120to200"][key]["red"]["legendary"]["first_line"][stat][1]);
-//   }
-// }
+
 function getValue(stat) {
   for (let range of statArray) {
     if (stat >= range.min && stat <= range.max) {
@@ -162,7 +158,6 @@ function findExpectedReturn(itemType,cubeType, stat){
   console.log(`Expected stat per 10M currency: ${expected_stat_per_currency.toFixed(30)}`);
 }
 findExpectedReturn("bottom","red",24);
-const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
 
 class Armor {
   constructor(level = 0, starLevel = 0) {
@@ -347,13 +342,24 @@ function updateImageAndBackground(input) {
     }
   }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector(".starforce button").addEventListener("click", function () {
+      equips.forEach(armor => {
+        if(armor){
+          console.log(armor.starLevel);
+          console.log(calcExpected(20000,armor.level,armor.starLevel,armor.starLevel+1,1,1,1,1).totalCost/20000);
+        }
+      })
+    });
+  });
 
 // Set up dropdown behavior
 itemInputs.forEach((input, index) => { //when box is clicked 
-  const selectedEquip = equips[index];
+  
   input.addEventListener('focus', () => {
     currentlySelected = index;
-
+    const selectedEquip = equips[index];
+  console.log(selectedEquip);
     if (selectedEquip) {
       updateStarsDisplay(selectedEquip.starLevel || 0);
       updateStarStat();
