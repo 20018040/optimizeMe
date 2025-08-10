@@ -176,3 +176,17 @@ export const itemsByLevel = {
     'eternal bottom'
   ]
 };
+//----------------------- equip types data
+export const equipTypes = [
+  'ring', 'ring', 'ring', 'ring',     // 0-3
+  'pocket',                           // 4
+  'ring', 'ring',              // 5-6
+  'weapon',                          // 7
+  'belt',                            // 8
+  'hat', 'ring', 'ring',              // 9–11
+  'top', 'bottom', 'shoes',          // 12–14
+  'ring', 'shoulder', 'gloves',       // 15–17
+  'emblem', 'badge', 'medal',        // 18–20
+  'secondary', 'cape', 'heart'        // 21–23
+];
+

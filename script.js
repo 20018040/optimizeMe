@@ -1,6 +1,6 @@
 const itemInputs = document.querySelectorAll('select.dropdown');
 let currentlySelected = null;
-import {imageMap,itemsByLevel} from './items.js';
+import {imageMap,itemsByLevel,equipTypes} from './items.js';
 import {dropdownMap} from './dropDownData.js';
 import {statArray,stats,highStats,noHP} from './starForceStats.js';
 import { cubeRates } from './cubeRates.js';
@@ -301,25 +301,43 @@ stars.forEach((star, index) => {
 
   });
 });
-
+const statMap = [
+  'STR', 'DEX', 'INT', 'LUK', 'Defense', 'MAX HP',       // 0-5
+  'MAX MP',                                        //6 
+  'Attack Power', 'Magic Attack', 'Speed', 'Jump', 'AllStat'  // 7-10
+];
+const statInputs = document.querySelectorAll('.statInput');
+function updateFlameStat(){
+  if (currentlySelected !== null && equips[currentlySelected]) {
+    statInputs.forEach((span,i) => {
+      const key = statMap[i];
+      const flame = equips[currentlySelected].flameStats[key];
+        if (key && flame){
+          span.value = flame;
+          console.log("Changing flame = ",flame);
+          span.style.color = 'green';
+        }
+        else{
+          span.value = '0';
+          span.style.color = 'gray';
+        }
+    });
+  }
+}
 function updateStarStat(){
   if (currentlySelected !== null && equips[currentlySelected]) {
       const selectedEquip = equips[currentlySelected];
       const itemLevel = selectedEquip.level || 150;
       // const equipType = selectedEquip.name?.toLowerCase().includes('ring') ? 'ring' : 'other';
-      const equipType =  equips[currentlySelected].type || 'ring';
+      const equipType =  selectedEquip.type || 'ring';
       
       const updatedStats = totalStats(itemLevel, selectedEquip.starLevel, 0, 0, equipType);
       // Update starForceStat values in the UI
       const armorStatsContainer = document.querySelector('.ArmorStats');
       const starForceSpans = armorStatsContainer.querySelectorAll('.starForceStat');
-
+      
       // Expected stat keys from totalStats: str, dex, int, luk, def, hp, atk, matk, spd, jmp, allStat
-      const statMap = [
-        'STR', 'DEX', 'INT', 'LUK', 'Defense', 'MAX HP',       // 0-5
-        'MAX MP',                                        //6 
-        'Attack Power', 'Magic Attack', 'Speed', 'Jump'  // 7-10
-      ];
+      
 
       starForceSpans.forEach((span, i) => { //uses each of statmap category to find value of key (stat) in upDatedStat
         const key = statMap[i];
@@ -334,6 +352,19 @@ function updateStarStat(){
       });
     }
 }
+
+statInputs.forEach((input, i) => {
+  input.addEventListener('input', () => {
+    if (currentlySelected !== null && equips[currentlySelected]) {
+      const armor = equips[currentlySelected];
+      const key = statMap[i];
+      const value = parseInt(input.value, 10);
+
+      armor.flameStats[key] = isNaN(value) ? null : value;
+    }
+  });
+});
+
 
 function updateImageAndBackground(input) {
   const value = input.value.toLowerCase();
@@ -358,38 +389,8 @@ function updateImageAndBackground(input) {
     }
   }
 }
-function findType(index){
-  if(index ===7){
-    return 'weapon';
-  }else if(index ===8){
-    return 'belt';
-  }else if(index ===9){
-    return 'hat';
-  }else if(index ===12){//overall later
-    return 'top';
-  }else if(index ===13){
-    return 'bottom';
-  }else if(index ===14){
-    return 'shoes';
-  }else if(index ===16){
-    return 'shoulder';
-  }else if(index ===17){
-    return 'gloves';
-  }else if(index ===18){
-    return 'emblem';
-  }else if(index ===19){
-    return 'badge';
-  }else if(index ===20){
-    return 'medal';
-  }else if(index ===21){
-    return 'secondary';
-  }else if(index ===22){
-    return 'cape';
-  }else if(index ===23){
-    return 'heart';
-  }
-  return 'ring'
-    
+function findType(index) {
+  return equipTypes[index] || 'other';
 }
 // Set up dropdown behavior
 itemInputs.forEach((input, index) => { //when box is clicked 
@@ -401,20 +402,26 @@ itemInputs.forEach((input, index) => { //when box is clicked
       updateStarsDisplay(selectedEquip.starLevel || 0,selectedEquip.level);
       updateStarStat();
       updateImageAndBackground(input);
+      updateFlameStat();
       updatePotential(selectedEquip.type);
+      console.log("Armor: ", selectedEquip.name, ". Flame Stats", selectedEquip.flameStats);
     }
 
   });
 
   input.addEventListener('change', () => { //when input actually changed
     const selectedValue = input.value;
+    console.log(index, "index");
     const armor = new Armor(findItemLevel(selectedValue),0,findType(index));
     armor.name = selectedValue;
     equips[index] = armor;
     currentlySelected = index;
     updateImageAndBackground(input);
+    updateStarStat();
+    updateFlameStat();
     updateStarsDisplay(armor.starLevel,armor.level);
-    updatePotential(armor.type);
-    console.log("Armor: ", armor.name, ". Type :", armor.type);
+    if(armor.type !== 'pocket' && armor.type !== 'badge')
+      updatePotential(armor.type);
+    console.log("Armor: ", armor.name, ". Flame Stats", armor.flameStats);
   });
 });
