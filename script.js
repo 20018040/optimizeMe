@@ -403,12 +403,11 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log(armor.starLevel);
           console.log(calcExpected(20000,armor.level,armor.starLevel,armor.starLevel+1,1,1,1,1).totalCost/20000);
         }
-        
       })
     });
   });
 });
-//testing
+
 // Set up dropdown behavior
 itemInputs.forEach((input, index) => { //when box is clicked 
   // 
