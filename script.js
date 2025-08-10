@@ -406,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
     });
   });
-}
+});
 
 // Set up dropdown behavior
 itemInputs.forEach((input, index) => { //when box is clicked 
@@ -440,4 +440,3 @@ itemInputs.forEach((input, index) => { //when box is clicked
     console.log("Armor: ", armor.name, ". Flame Stats", armor.flameStats);
   });
 });
-}
