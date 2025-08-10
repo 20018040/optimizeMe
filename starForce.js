@@ -1,5 +1,5 @@
 function mesoCost(level, currentStar){
-    divider = 20000;
+    let divider = 20000;
     if (currentStar < 10) {
     return 100*Math.round((level**3) *  (currentStar+1)/2500 + 10);
   } else if (currentStar == 10) {
@@ -101,7 +101,7 @@ function mesoCost(level, currentStar){
     return 'success'
 }
   
-  function calcExpected(attempts, level, currentStar,goalStar, starCatch, safeGuard, thirtyOff, fifteensixteen){
+ export function calcExpected(attempts, level, currentStar,goalStar, starCatch, safeGuard, thirtyOff, fifteensixteen){
     let totalCost = 0;
     let totalBoom = 0;
     const sessionCosts = [];
@@ -119,7 +119,7 @@ function mesoCost(level, currentStar){
           sessionCost += mesoCost(level,trialStar);
         }
         // console.log("current star : ",trialStar);
-        result = starForce(level, trialStar,starCatch,safeGuard,chanceTime);
+        const result = starForce(level, trialStar,starCatch,safeGuard,chanceTime);
 
         if(result == 'success'){
           trialStar++;
@@ -263,8 +263,10 @@ function mesoCost(level, currentStar){
     });
   }
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelector(".button-wrapper button").addEventListener("click", function () {
-        const level = document.querySelector('input[placeholder="Item Level"]').value;
+    const btn = document.querySelector(".button-wrapper button");
+    if (btn) {
+    btn.addEventListener("click", function () {
+      const level = document.querySelector('input[placeholder="Item Level"]').value;
         let starCatching = false;
         if (document.querySelector('input[list="Star catching"]').value == 'Starcatching'){
           starCatching = true;
@@ -307,6 +309,51 @@ function mesoCost(level, currentStar){
         document.getElementById("output-content").innerHTML = output;
         outputBox.style.display = "block";
     });
+    } 
+    // document.querySelector(".button-wrapper button").addEventListener("click", function () {
+    //     const level = document.querySelector('input[placeholder="Item Level"]').value;
+    //     let starCatching = false;
+    //     if (document.querySelector('input[list="Star catching"]').value == 'Starcatching'){
+    //       starCatching = true;
+    //     }
+    //     let safeguard = false;
+    //     if(document.querySelector('input[list="safeguards"]').value == 'Safeguard'){
+    //       safeguard = true;
+    //     }
+    //     let thirtyOff = 1.0;
+    //     let fifteenSixteen = false;
+    //     if(document.querySelector('input[list="events"]').value == '30% Off + 15/16'){
+    //       thirtyOff = 0.7;
+    //       fifteenSixteen = true;
+    //     }
+    //     else if(document.querySelector('input[list="events"]').value == '30% Off'){
+    //       thirtyOff = 0.7;
+    //     }
+    //     else if(document.querySelector('input[list="events"]').value == '15/16'){
+    //       fifteenSixteen = true;
+    //     }
+    //     const events = document.querySelector('input[list="events"]').value;
+    //     const currentStar = Number(document.querySelector('input[placeholder="0"]').value);
+    //     const goalStar = Number(document.querySelector('input[placeholder="22"]').value);
+    //     const trials = Number(document.querySelector('input[placeholder="3000"]').value);
+        
+    //     const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(trials,level,currentStar,goalStar, starCatching,safeguard,thirtyOff, fifteenSixteen)
+    //     // const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(30000,150,15,22, true,true,0.7, false);
+    //     // let trials = 3000;
+    //     const output = `
+    //         <p><strong>Average Cost: </strong>${(totalCost/trials).toLocaleString()}</p>
+    //         <p><strong>Average Boom: </strong>${(totalBoom/trials).toLocaleString()}</p>
+    //     `;
+        
+        
+    //     renderCharts(sessionCosts,sessionBooms);
+    //     const outputBox = document.getElementById("output-box");
+    //     const simulationBox = document.getElementById("Simulation-box");
+    //     simulationBox.style.display = "block"; 
+        
+    //     document.getElementById("output-content").innerHTML = output;
+    //     outputBox.style.display = "block";
+    // });
 });
 
   
