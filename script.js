@@ -406,6 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
     });
   });
+}
 
 // Set up dropdown behavior
 itemInputs.forEach((input, index) => { //when box is clicked 
@@ -423,7 +424,6 @@ itemInputs.forEach((input, index) => { //when box is clicked
     }
 
   });
-
   input.addEventListener('change', () => { //when input actually changed
     const selectedValue = input.value;
     console.log(index, "index");
@@ -440,3 +440,4 @@ itemInputs.forEach((input, index) => { //when box is clicked
     console.log("Armor: ", armor.name, ". Flame Stats", armor.flameStats);
   });
 });
+}
