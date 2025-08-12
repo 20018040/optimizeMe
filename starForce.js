@@ -102,8 +102,10 @@ function mesoCost(level, currentStar){
 }
   
  export function calcExpected(attempts, level, currentStar,goalStar, starCatch, safeGuard, thirtyOff, fifteensixteen){
+    
     let totalCost = 0;
     let totalBoom = 0;
+    thirtyOff = thirtyOff === 0 ? 1 : 0.70;
     const sessionCosts = [];
     const sessionBooms = [];
     for(let i = 0; i<attempts;i++){
@@ -113,6 +115,7 @@ function mesoCost(level, currentStar){
       let chanceTime = 0;
       while(trialStar<goalStar){
         sessionCost += mesoCost(level, trialStar)*thirtyOff;
+        
         if(trialStar == 15 && fifteensixteen)
           chanceTime = 2;
         if((trialStar == 16 || trialStar == 15 )&& safeGuard &&chanceTime != 2){
@@ -275,14 +278,14 @@ function mesoCost(level, currentStar){
         if(document.querySelector('input[list="safeguards"]').value == 'Safeguard'){
           safeguard = true;
         }
-        let thirtyOff = 1.0;
+        let thirtyOff = 0;
         let fifteenSixteen = false;
         if(document.querySelector('input[list="events"]').value == '30% Off + 15/16'){
-          thirtyOff = 0.7;
+          thirtyOff = 1;
           fifteenSixteen = true;
         }
         else if(document.querySelector('input[list="events"]').value == '30% Off'){
-          thirtyOff = 0.7;
+          thirtyOff = 1;
         }
         else if(document.querySelector('input[list="events"]').value == '15/16'){
           fifteenSixteen = true;
@@ -310,50 +313,7 @@ function mesoCost(level, currentStar){
         outputBox.style.display = "block";
     });
     } 
-    // document.querySelector(".button-wrapper button").addEventListener("click", function () {
-    //     const level = document.querySelector('input[placeholder="Item Level"]').value;
-    //     let starCatching = false;
-    //     if (document.querySelector('input[list="Star catching"]').value == 'Starcatching'){
-    //       starCatching = true;
-    //     }
-    //     let safeguard = false;
-    //     if(document.querySelector('input[list="safeguards"]').value == 'Safeguard'){
-    //       safeguard = true;
-    //     }
-    //     let thirtyOff = 1.0;
-    //     let fifteenSixteen = false;
-    //     if(document.querySelector('input[list="events"]').value == '30% Off + 15/16'){
-    //       thirtyOff = 0.7;
-    //       fifteenSixteen = true;
-    //     }
-    //     else if(document.querySelector('input[list="events"]').value == '30% Off'){
-    //       thirtyOff = 0.7;
-    //     }
-    //     else if(document.querySelector('input[list="events"]').value == '15/16'){
-    //       fifteenSixteen = true;
-    //     }
-    //     const events = document.querySelector('input[list="events"]').value;
-    //     const currentStar = Number(document.querySelector('input[placeholder="0"]').value);
-    //     const goalStar = Number(document.querySelector('input[placeholder="22"]').value);
-    //     const trials = Number(document.querySelector('input[placeholder="3000"]').value);
-        
-    //     const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(trials,level,currentStar,goalStar, starCatching,safeguard,thirtyOff, fifteenSixteen)
-    //     // const {totalCost, totalBoom, sessionCosts, sessionBooms} = calcExpected(30000,150,15,22, true,true,0.7, false);
-    //     // let trials = 3000;
-    //     const output = `
-    //         <p><strong>Average Cost: </strong>${(totalCost/trials).toLocaleString()}</p>
-    //         <p><strong>Average Boom: </strong>${(totalBoom/trials).toLocaleString()}</p>
-    //     `;
-        
-        
-    //     renderCharts(sessionCosts,sessionBooms);
-    //     const outputBox = document.getElementById("output-box");
-    //     const simulationBox = document.getElementById("Simulation-box");
-    //     simulationBox.style.display = "block"; 
-        
-    //     document.getElementById("output-content").innerHTML = output;
-    //     outputBox.style.display = "block";
-    // });
+    
 });
 
   

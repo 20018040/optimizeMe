@@ -1,5 +1,6 @@
 const itemInputs = document.querySelectorAll('select.dropdown');
 const equips = Array(24).fill(null); // One for each dropdown (input1 to input24)
+const starForceDatas = Array(24).fill(null);
 let currentlySelected = null;
 import {imageMap,itemsByLevel,equipTypes} from './items.js';
 import {dropdownMap} from './dropDownData.js';
@@ -55,7 +56,6 @@ function populateDropDown(downs, lists){
 //updates potential choosing options depending on itemtype selected
 function updatePotential(itemType){
   let type = itemType.toLowerCase();
-  console.log(type);
   const potentialInfos = cubeRates["lvl120to200"][type]["red"]["legendary"];
   const firstDropdowns = document.querySelectorAll('.first');
   const secondDropdowns = document.querySelectorAll('.second');
@@ -157,7 +157,6 @@ function findExpectedReturn(itemType,cubeType, stat){
   console.log(`Expected stat per trial: ${expected_stat.toFixed(2)}%`);
   console.log(`Expected stat per 10M currency: ${expected_stat_per_currency.toFixed(30)}`);
 }
-findExpectedReturn("bottom","red",24);
 
 class Armor {
   constructor(level = 0, starLevel = 0, type = 'ring') {
@@ -393,20 +392,39 @@ function updateImageAndBackground(input) {
 function findType(index) {
   return equipTypes[index] || 'other';
 }
+function getSortedIndexesByFirstNumber(arr) {
+  return arr
+    .map((item, idx) => ({ item, idx }))
+    .filter(({ item }) => item !== null)
+    .sort((a, b) => b.item[0] - a.item[0])  // ascending sort by first number
+    .map(({ idx }) => idx);
+}
 // Set up dropdown behavior
-itemInputs.forEach((input, index) => { //when box is clicked 
   // const selectedEquip = equips[index];
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".starforce button").addEventListener("click", function () {
-      equips.forEach(armor => {
-        if(armor){
-          console.log(armor.starLevel);
-          console.log(calcExpected(20000,armor.level,armor.starLevel,armor.starLevel+1,1,1,1,1).totalCost/20000);
+      equips.forEach((armor, index) => {
+        if(armor){ //later on calcExpected terms (starcatch,safeguard event type must be user input);
+          const expected = calcExpected(20000,armor.level,armor.starLevel,armor.starLevel+1,1,1,0,0)
+          const avgCost = expected.totalCost/20000;
+          const avgBoom = expected.totalBoom/20000;
+          const statGained = statAtStar(armor.level,armor.starLevel,armor.type,);
+          const atk = statGained["Attack Power"] ?? 0 ;
+          const pureStat  = statGained["DEX"] + atk*4;  //later add conversion
+          // console.log("ITEM NAME : ", armor.name,"'s data ----------");
+          // console.log("Expected : ",expected);
+          // console.log("statGained : ", statGained);
+          // console.log("pureStat : ",pureStat);
+          // console.log("Stat per 100m : ", pureStat/(avgCost / 100_000_000));
+          const data = [pureStat/(avgCost / 100_000_000),avgBoom];
+          starForceDatas[index] = data;
         }
-      })
+      });
+      console.log(starForceDatas);
+      console.log(getSortedIndexesByFirstNumber(starForceDatas));
     });
   });
-});
+
 
 // Set up dropdown behavior
 itemInputs.forEach((input, index) => { //when box is clicked 
@@ -426,7 +444,6 @@ itemInputs.forEach((input, index) => { //when box is clicked
   });
   input.addEventListener('change', () => { //when input actually changed
     const selectedValue = input.value;
-    console.log(index, "index");
     const armor = new Armor(findItemLevel(selectedValue),0,findType(index));
     armor.name = selectedValue;
     equips[index] = armor;
@@ -437,6 +454,5 @@ itemInputs.forEach((input, index) => { //when box is clicked
     updateStarsDisplay(armor.starLevel,armor.level);
     if(armor.type !== 'pocket' && armor.type !== 'badge')
       updatePotential(armor.type);
-    console.log("Armor: ", armor.name, ". Flame Stats", armor.flameStats);
   });
 });
