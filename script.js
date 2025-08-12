@@ -369,7 +369,7 @@ statInputs.forEach((input, i) => {
 
 function updateImageAndBackground(input) {
   const value = input.value.toLowerCase();
-  const imageUrl = imageMap[value] ? `itemimages/${imageMap[value]}` : '';
+  const imageUrl = imageMap[value] ? `itemImages/${imageMap[value]}` : '';
   const itemImage = document.querySelector('.itemImage img');
 
   if (imageUrl) {
