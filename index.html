@@ -20,35 +20,35 @@
         
         <h1>Starforce expected cost calculator</h1>
         <div class="box override-box">
+            <div class="box-title">Item Information</div>
             <div class="next-row">
-                Level 
-                <input type="text" placeholder="Item Level" class="search-bar" />
-                Star Catching 
-                <input list="Star catching" name="item" />
-                <datalist id="Star catching" placeholder ="Star catching">
-                <option value="Starcatching">
-                <option value="No Starcatching">
-                </datalist> 
-                Safeguard 
-                <input list="safeguards" name="item" />
-                <datalist id="safeguards" placeholder ="Star catching">
-                <option value="Safeguard">
-                <option value="No Safeguard">
-                </datalist>
+                <label for="itemLevel">Level</label>
+                <input type="text" id="itemLevel" placeholder="Item Level" class="search-bar" />
+                <label for="currentStar">Current Star</label>
+                <input type="text" id="currentStar" placeholder="0" class="search-bar" />
+                <label for="goalStar">Goal Star</label>
+                <input type="text" id="goalStar" placeholder="22" class="search-bar" />
             </div>
             <div class="next-row">
-                Events
-                <input list = "events" name ="item" />
-                <datalist id="events" placeholder ="Star catching">
-                    <option value="30% Off">
-                    <option value="15/16">
-                    <option value="30% Off + 15/16">
-                    <option value="+2 up to 10">   
-                </datalist> 
-                Current Star
-                <input type="text" placeholder="0" class="search-bar" />
-                Goal Star 
-                <input type="text" placeholder="22" class="search-bar" />
+                <label for="Events">Events</label>
+                <select id="Events" name="Events">
+                    <option value="Nothing">No event</option>
+                    <option value="30% Off">30% Off</option>
+                    <option value="15/16">15/16</option>
+                    <option value="30% Off + 15/16">30% Off + 15/16</option>
+                    <option value="+2 up to 10">+2 up to 10</option>
+                </select>
+                <label for="starCatching">Star Catching</label>
+                <select id="starCatching" name="starCatching">
+                    <option value="Starcatching">Starcatching</option>
+                    <option value="No Starcatching">No Starcatching</option>
+                </select>
+
+                <label for="safeguard">Safeguard</label>
+                <select id="safeguard" name="safeguard">
+                    <option value="Safeguard">Safeguard</option>
+                    <option value="No Safeguard">No Safeguard</option>
+                </select>
             </div>
             <div class="next-row">
                 Trials
@@ -59,13 +59,12 @@
             </div>
             
         </div>
-        <div id="output-box" class="box" style="height : 200px; margin: 20px auto; background-color: white; color: black; padding: 20px; display: none;">
-            <h3>Input Summary</h3>
+        <div id="output-box" class="box">
+            <h2>Input Summary</h2>
             <div id="output-content"></div>
         </div>
-        <div id="Simulation-box" class="box" style="margin: 20px auto; background-color: white; color: black; padding: 20px; display: none;">
+        <div id="Simulation-box" class="box" style=" margin: 20px auto; background-color: white; color: black; padding: 20px; ">
             <h3>Simulation Results</h3>
-            
             <div class="chart-container">
                 <canvas id="costChart" width="400" height="200"></canvas>
             </div>
@@ -74,14 +73,9 @@
             </div>
         </div>
     
-        <section>
-            <div>Link 1 </div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-        </section>
-        <h2>About me</h2>
-        <p>Write about me later.</p>
+        
+        <h2>Staforce simulator </h2>
+        <p>Write about description of this web later.</p>
     
         <script type="module" src="starForce.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

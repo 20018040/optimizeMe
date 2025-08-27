@@ -392,7 +392,7 @@ function updateImageAndBackground(input) {
 function findType(index) {
   return equipTypes[index] || 'other';
 }
-function getSortedIndexesByFirstNumber(arr) {
+function getSortedIndexesByFirstNumber(arr) { //sort calculated starforce into descending sort 
   return arr
     .map((item, idx) => ({ item, idx }))
     .filter(({ item }) => item !== null)
@@ -404,19 +404,19 @@ function getSortedIndexesByFirstNumber(arr) {
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".starforce button").addEventListener("click", function () {
       equips.forEach((armor, index) => {
-        if(armor){ //later on calcExpected terms (starcatch,safeguard event type must be user input);
+        if(armor){ //LaTER on calcExpected terms (starcatch,safeguard event type must be user input);
           const expected = calcExpected(20000,armor.level,armor.starLevel,armor.starLevel+1,1,1,0,0)
           const avgCost = expected.totalCost/20000;
           const avgBoom = expected.totalBoom/20000;
           const statGained = statAtStar(armor.level,armor.starLevel,armor.type,);
           const atk = statGained["Attack Power"] ?? 0 ;
-          const pureStat  = statGained["DEX"] + atk*4;  //later add conversion
+          const pureStat  = statGained["DEX"] + atk*4;  //LATER add conversion
           // console.log("ITEM NAME : ", armor.name,"'s data ----------");
           // console.log("Expected : ",expected);
           // console.log("statGained : ", statGained);
           // console.log("pureStat : ",pureStat);
           // console.log("Stat per 100m : ", pureStat/(avgCost / 100_000_000));
-          const data = [pureStat/(avgCost / 100_000_000),avgBoom];
+          const data = [pureStat/(avgCost / 100_000_000),avgBoom]; //stat gained per 100m meso, avg boom
           starForceDatas[index] = data;
         }
       });

@@ -271,26 +271,30 @@ function mesoCost(level, currentStar){
     btn.addEventListener("click", function () {
       const level = document.querySelector('input[placeholder="Item Level"]').value;
         let starCatching = false;
-        if (document.querySelector('input[list="Star catching"]').value == 'Starcatching'){
-          starCatching = true;
-        }
         let safeguard = false;
-        if(document.querySelector('input[list="safeguards"]').value == 'Safeguard'){
-          safeguard = true;
-        }
         let thirtyOff = 0;
         let fifteenSixteen = false;
-        if(document.querySelector('input[list="events"]').value == '30% Off + 15/16'){
+        const events = document.querySelector('select[name="Events"]').value;
+        const catching = document.querySelector('select[name="starCatching"]').value;
+        const guard = document.querySelector('select[name="safeguard"]').value;
+
+        if (catching == 'Starcatching'){
+          starCatching = true;
+        }
+        if(guard == 'Safeguard'){
+          safeguard = true;
+        }
+        if(events == '30% Off + 15/16'){
           thirtyOff = 1;
           fifteenSixteen = true;
         }
-        else if(document.querySelector('input[list="events"]').value == '30% Off'){
+        else if(events == '30% Off'){
           thirtyOff = 1;
         }
-        else if(document.querySelector('input[list="events"]').value == '15/16'){
+        else if(events == '15/16'){
           fifteenSixteen = true;
         }
-        const events = document.querySelector('input[list="events"]').value;
+        
         const currentStar = Number(document.querySelector('input[placeholder="0"]').value);
         const goalStar = Number(document.querySelector('input[placeholder="22"]').value);
         const trials = Number(document.querySelector('input[placeholder="3000"]').value);
