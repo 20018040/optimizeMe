@@ -309,8 +309,8 @@ function mesoCost(level, currentStar){
         
         
         renderCharts(sessionCosts,sessionBooms);
-        const outputBox = document.getElementById("output-box");
-        const simulationBox = document.getElementById("Simulation-box");
+        const outputBox = document.getElementById("inputSummary");
+        const simulationBox = document.getElementById("simulationGraph");
         simulationBox.style.display = "block"; 
         
         document.getElementById("output-content").innerHTML = output;
